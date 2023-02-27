@@ -1,0 +1,457 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biography</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/biography.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unna&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<style>
+    
+</style>
+<body id="body">
+    {% if messages %}
+    {% for message in messages %}
+    <div id="messages">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+    <div class="container1" >
+        <div class="scroll">
+            
+            <header>
+                <div class="card1">
+                    <div class="profile" onclick="profile()">
+                        <div class="text">{{request.user.first_name.0|upper}}{{request.user.last_name.0|upper}}</div>
+                    </div>
+                    <div class="logo">
+                        Futurism
+                    </div>
+                </div>
+                <div class="card2">
+                    <div class="notification" onclick="notification()">
+                        <i class="fa-regular fa-bell"></i>
+                    </div>
+                   <a href="{% url 'create-photo' deceased.id %}" class="photos">
+                    <div class="icons"><i class="fa-regular fa-square-plus"></i></div>
+                    <div class="text">Add Photos</div>
+                    
+                   </a>
+                </div>
+    
+                
+            </header>
+            <div class="body">
+                <div class="elipsis-card">
+                    <div class="icon"><i class="fa-solid fa-ellipsis"></i></div>
+                  </div>
+                  <div class="date-wrapper">
+                    <h1>{{deceased.first_name}} {{deceased.last_name}}</h1>
+                    <p class="text">{{deceased.month_birth}} {{deceased.day_birth}}, {{deceased.year_birth}} - {{deceased.month_death}} {{deceased.day_death}}, {{deceased.year_death}}</p>
+                    <div class="invite-card">
+                        <div class="icon"><i class="fa-solid fa-user-group"></i></div>
+                        <div class="text">No contributors yet</div>
+                        <a href="">Invite</a>
+                    </div>
+                    <div class="candle-card">
+                        <img src="{% static 'images/candle_icon.webp' %}" alt="">
+                        <div class="text">No candles lit yet.</div>
+                        <a href="">View</a>
+                    </div>
+                  </div>
+                  
+                  <div class="btn-card">
+                   <a href="" class="btn one">
+                    <div class="icon"><i class="fa-solid fa-place-of-worship"></i></div>
+                    <div class="text">Add Ceremony</div>
+                   </a>
+                   <a href="" class="btn">
+                    <div class="icon"><i class="fa-solid fa-gear"></i></div>
+                    <div class="text">Memorials Settings</div>
+                   </a>
+                  
+                  </div>
+                  
+                  <div class="fact-card">
+                    {% if biography_facts %}
+                    {% for data in biography_facts %}
+                    <div class="items">
+                        <div class="card1">
+                            <div class="box1">{{data.get_facts_display}}</div>
+                            <a href="{% url 'create-facts' deceased.id  %}" class="box2" >Add info</a>
+                        </div>
+                        <a href="{% url 'create-facts' deceased.id  %}" class="card2" >
+                           <div class="icon"> <i class="fa-solid fa-pen-to-square"></i></div>
+                            <div class="text">Edit</div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="items">
+                        <div class="card1">
+                            <div class="box1">Nkoyo's favorite hobbies</div>
+                            <div class="box2">Add info</div>
+                        </div>
+                        <div class="card2" onclick="editcontainer()">
+                           <div class="icon"> <i class="fa-solid fa-pen-to-square"></i></div>
+                            <div class="text">Edit</div>
+                        </div>
+                    </div>
+                    <div class="items">
+                        <div class="card1">
+                            <div class="box1">Place of birth</div>
+                            <div class="box2">Add info</div>
+                        </div>
+                       
+                    </div>
+                    <div class="items">
+                        <div class="card1">
+                            <div class="box1">Most recently lived in</div>
+                            <div class="box2">Add info</div>
+                        </div>
+                       
+                    </div>
+                    {% endif %}
+                  </div>
+                   
+                   
+                    
+                  
+                  <div class="biography-card">
+                    <div class="items">
+                        <div class="card1">
+                            <div class="box1">Biography</div>
+                            <div class="box2" onclick="editcontainer()">Add info</div>
+                        </div>
+                        <div class="card2" onclick="editcontainer()">
+                           <div class="icon"> <i class="fa-solid fa-pen-to-square"></i></div>
+                            <div class="text">Edit</div>
+                        </div>
+                    </div>
+                  </div>
+
+                  <div class="biography-card">
+                        <div class="items">
+                            <div class="card1">
+                                <div class="box1">Memorial Gifts</div>
+                                <div class="light">Light a candle to show your support for Nkoyo Ukem and ensure their memory lives on forever. Your contribution helps to keep our website free for all grieving families.</div>
+                                <div class="tree">🌲 For every candle lit, we will have a tree planted in honor of Nkoyo.</div>
+                                
+                            </div>
+                            
+                        </div>
+                        <div class="light-candle">
+                            <img src="./candle_icon.webp" alt="">
+                           <a href="" class="btn">Light this candle for Nkoyo</a>
+                        </div>
+                  </div>
+            </div>
+                
+        </div>
+    </div>
+    <div class="container2" >
+        <div class="wrapper">
+            <div class="card1">
+                <div class="text">Biography</div>
+            </div>
+            {% if parent.cover_photo %}
+           <div class="cover-image">
+            <img src="{{parent.cover_photo.url}}" alt="">
+           </div>
+            {% else %}
+            <div class="card2">
+                <img src="{% static 'images/placeholder-cover-photo-3.webp' %}" alt="">
+                <div class="text">No cover photo uploaded</div>
+            </div>
+            {% endif %}
+            <div class="card3">
+                <div class="btn-wrapper">
+                    <button>
+                        <i class="fa-sharp fa-regular fa-heart"></i>
+                        <div class="text">Heart</div>
+                    </button>
+
+                    <button>
+                        <i class="fa-solid fa-share-nodes"></i>
+                        <div class="text">Share</div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="nav-btn">
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+        </div>
+    </div>
+    <div class="profile-modal" id="profile-modal" onclick="profile_modal()"></div>
+
+    <div class="mobile-container">
+        <div class="navbar">
+            <div class="card1">
+                <div class="profile" onclick="mprofile()">
+                    <div class="text">{{request.user.first_name.0|upper}}{{request.user.last_name.0|upper}}</div>
+                </div>
+                <div class="logo">
+                    Futurism
+                </div>
+            </div>
+            <div class="card2">
+                <div class="notification" onclick="notification()">
+                    <i class="fa-regular fa-bell"></i>
+                </div>
+               <a href="{% url 'create-photo' deceased.id %}" class="photos">
+                <div class="icons"><i class="fa-regular fa-square-plus"></i></div>
+                <div class="text">Add Photos</div>
+                
+               </a>
+            </div>
+
+            <div class="m-profile-card" id="m-profile-card">
+                <div class="header">Signed in as {{request.user}}</div>
+                <div class="body">
+                    <a href="" class="items">
+                        <div class="icons"><i class="fa-solid fa-house"></i></div>
+                        <div class="texts">Your Memorials</div>
+                    </a>
+                    <a href="" class="items">
+                        <div class="icons"><i class="fa-solid fa-circle-user"></i></div>
+                        <div class="texts">Account Settings</div>
+                    </a>
+                    <a href="" class="items">
+                        <div class="icons"><i class="fa-solid fa-circle-question"></i></div>
+                        <div class="texts">Help</div>
+                    </a>
+                    <a href="" class="items">
+                        <div class="icons"><i class="fa-solid fa-file-invoice"></i></div>
+                        <div class="texts">Terms of service</div>
+                    </a>
+                    <a href="" class="items">
+                        <div class="icons"><i class="fa-solid fa-lock-keyhole"></i></div>
+                        <div class="texts">Privacy policy</div>
+                    </a>
+                    <a href="" class="items">
+                        <div class="icons"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+                        <div class="texts">Logout</div>
+                    </a>
+        
+                </div>
+            </div>
+
+        </div>
+
+        <div class="m-body">
+            {% if parent.cover_photo %}
+            <div class="cover-image">
+             <img src="{{parent.cover_photo.url}}" alt="">
+            </div>
+            {% else %}
+            <div class="img-card">
+                <img src="{% static 'images/placeholder-cover-photo-3.webp' %}" alt="">
+            </div>
+            {% endif %}
+            <div class="text-cover">No cover photo uploaded</div>
+            <div class="sub-card">
+             <div class="top-nav">
+                <div class="text">Biography</div>
+             </div>
+             
+             <div class="bottom-wrapper">
+                <div class="deceased">
+                    <h1>{{deceased.first_name}} {{deceased.last_name}}</h1>
+                    <p class="text">{{deceased.month_birth}} {{deceased.day_birth}}, {{deceased.year_birth}} - {{deceased.month_death}} {{deceased.day_death}}, {{deceased.death_year}}</p>
+                </div>
+                <div class="m-invite-card">
+                    <div class="icon"><i class="fa-solid fa-user-group"></i></div>
+                    <div class="text">No contributors yet</div>
+                    <a href="">Invite</a>
+                </div>
+                <div class="m-candle-card">
+                    <img src="{% static 'images/candle_icon.webp' %}" alt="">
+                    <div class="text">No candles lit yet.</div>
+                    <a href="">View</a>
+                </div>
+                <div class="bottom-nav">
+                    <div class="card1">
+                        <div class="items"> <i class="fa-sharp fa-regular fa-heart"></i></div>
+                        <div class="items"> 
+                            <i class="fa-sharp fa-regular fa-heart"></i>
+                            <span>1</span>
+                        </div>
+                        <div class="items">Add a comment...</div>
+                    </div>
+    
+                    <div class="card2">
+                        <i class="fa-solid fa-share-nodes"></i>
+                    </div>
+                </div>
+             </div>
+            </div>
+        </div>
+        <div class="btn-card">
+            <a href="" class="btn one">
+             <div class="icon"><i class="fa-solid fa-place-of-worship"></i></div>
+             <div class="text">Add Ceremony</div>
+            </a>
+            <a href="" class="btn">
+             <div class="icon"><i class="fa-solid fa-gear"></i></div>
+             <div class="text">Memorials Settings</div>
+            </a>
+           
+           </div>
+           
+           <div class="fact-card">
+            {% if biography_facts %}
+            {% for data in biography_facts %}
+            <div class="items">
+                <div class="card1">
+                    <div class="box1">{{data.get_facts_display}}</div>
+                    <a href="{% url 'create-facts' deceased.id  %}" class="box2" >Add info</a>
+                </div>
+                <a href="{% url 'create-facts' deceased.id  %}" class="card2" >
+                   <div class="icon"> <i class="fa-solid fa-pen-to-square"></i></div>
+                    <div class="text">Edit</div>
+                </a>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="items">
+                <div class="card1">
+                    <div class="box1">{{deceased.first_name}}'s favorite hobbies</div>
+                    <a href="{% url 'create-facts' deceased.id  %}" class="box2">Add info</a>
+                </div>
+                <a href="{% url 'create-facts' deceased.id  %}" class="card2" >
+                   <div class="icon"> <i class="fa-solid fa-pen-to-square"></i></div>
+                    <div class="text">Edit</div>
+                </a>
+            </div>
+            
+           
+            {% endif %}
+          </div>
+           
+           <div class="biography-card">
+             <div class="items">
+                 <div class="card1">
+                     <div class="box1">Biography</div>
+                     <div class="box2" onclick="editcontainer()">Add info</div>
+                 </div>
+                 <div class="card2" onclick="editcontainer()">
+                    <div class="icon"> <i class="fa-solid fa-pen-to-square"></i></div>
+                     <div class="text">Edit</div>
+                 </div>
+                </div>
+           </div>
+
+           <div class="biography-card">
+                 <div href="" class="items">
+                     <div class="card1">
+                         <div class="box1">Memorial Gifts</div>
+                         <div class="light">Light a candle to show your support for Nkoyo Ukem and ensure their memory lives on forever. Your contribution helps to keep our website free for all grieving families.</div>
+                         <div class="tree">🌲 For every candle lit, we will have a tree planted in honor of Nkoyo.</div>
+                         
+                     </div>
+                     
+                 </div>
+                 <div class="light-candle">
+                     <img src="{% static 'images/candle_icon.webp' %}" alt="">
+                    <a href="" class="btn">Light this candle for Nkoyo</a>
+                 </div>
+           </div>
+         
+    </div>
+    <div class="profile-card" id="profile-card">
+        <div class="header">Signed in as {{request.user}}</div>
+        <div class="body">
+            <a href="" class="items">
+                <div class="icons"><i class="fa-solid fa-house"></i></div>
+                <div class="texts">Your Memorials</div>
+            </a>
+            <a href="" class="items">
+                <div class="icons"><i class="fa-solid fa-circle-user"></i></div>
+                <div class="texts">Account Settings</div>
+            </a>
+            <a href="" class="items">
+                <div class="icons"><i class="fa-solid fa-circle-question"></i></div>
+                <div class="texts">Help</div>
+            </a>
+            <a href="" class="items">
+                <div class="icons"><i class="fa-solid fa-file-invoice"></i></div>
+                <div class="texts">Terms of service</div>
+            </a>
+            <a href="" class="items">
+                <div class="icons"><i class="fa-solid fa-lock-keyhole"></i></div>
+                <div class="texts">Privacy policy</div>
+            </a>
+            <a href="" class="items">
+                <div class="icons"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+                <div class="texts">Logout</div>
+            </a>
+
+        </div>
+    </div>
+    <div class="notification-wrapper" id="notification-wrapper" onclick="close_not(event)">
+        <div class="not-box" >
+            <div class="header">
+                <div class="title">Notifications</div>
+                <button onclick="notification()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="body">
+                <div class="empty">You have no notifications</div>
+            </div>
+        </div>
+    </div>
+
+
+   
+   <div class="edit-container" id="edit-container">
+    <form action="" method="POST" enctype="multipart/form-data" >
+        {% csrf_token %}
+        <div class="header">
+            <div class="title">Edit Biography</div>
+            <div class="btn-x" onclick="cancel_edit()"><i class="fa-solid fa-xmark"></i></div>
+        </div>
+        <div class="body-edit" >
+            <div class="container-a">
+                <h1 class="meaning">Add Biography for {{deceased.first_name}} {{deceased.last_name}}</h1>
+                
+                
+                <div class="box-b">
+                    {{form.body_text}}
+                </div>
+            </div>
+            <div class="container-b">
+                <div class="file">
+                   <button class="btn">
+                    <div class="cover">Upload Cover Photo</div>
+                    <div class="file-card">
+                        {{form.cover_photo}}
+                        
+                        <input type="hidden" value="{{request.user.id}}" name="user" id="id_user" required>
+                        <input type="hidden" name="deceased" id="id_deceased" value="{{deceased.id}}">
+                    </div>
+                   </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <button>Save</button>
+        </div>
+    </form>
+    </div>
+
+   
+
+   
+
+   
+</body>
+<script src="{% static 'javascript/biography.js' %}"></script>
+</html>
