@@ -37,7 +37,7 @@ ul{
     font-size: 30px;
     font-family: 'Unna', serif;
     font-weight: 600;
-    color: #657287;
+    color:#230c22;
 }
 
 .container .header h1{
@@ -76,7 +76,7 @@ ul{
 }
 
 .container .body .input-card input:focus{
-    outline:solid #657287 2px;
+    outline:solid#230c22 2px;
   
 }
 
@@ -86,7 +86,7 @@ ul{
     top: 10px;
     left: 30px;
     font-size: 1.1rem;
-    color: #6f7780;
+    color: #230c22;
 }
 
 
@@ -103,7 +103,7 @@ ul{
     top: 10px;
     left: 30px;
     font-size: 1.1rem;
-    color: #6f7780;
+    color: #230c22;
 }
 
 .container .body .input-card #password.top{
@@ -118,7 +118,7 @@ ul{
     top: 10px;
     right: 10px;
     font-size: 1.1rem;
-    color: #6f7780;
+    color: #230c22;
     cursor: pointer;
 }
 .container .body .input-card .eye i{
@@ -147,7 +147,7 @@ ul{
 }
 
 .continue-card button{
-    background-color: #627389;
+    background-color: #3a183f;
     color: white;
     border: transparent;
     padding: 16px 0;
@@ -160,7 +160,7 @@ ul{
 
 }
 .continue-card button:hover{
-    background-color:#6f7780;
+    background-color:#230c22;
 }
 
 .continue-card .account{
@@ -211,7 +211,8 @@ ul{
     margin-right: 30px;
     font-size: 19px;
     font-weight: 600;
-    color:#627389;
+    color:#3a183f;
+   
 }
 .auth-card  .card a .text{
     font-size: 15px;

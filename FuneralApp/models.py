@@ -32,6 +32,9 @@ class myuser(AbstractBaseUser, PermissionsMixin):
 
 
 
+
+
+
 month_choices = [
     ('January','January'),
     ('February','February'),
@@ -49,6 +52,7 @@ month_choices = [
 
 class Deceased(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    #contributors = models.ManyToManyField(Contributor, blank=True,null=True)
     first_name = models.CharField(max_length=255)
     middle_name = models.CharField(max_length=255,blank=True,null=True)
     last_name = models.CharField(max_length=255)
@@ -67,6 +71,14 @@ class Deceased(models.Model):
         return self.first_name
 
 
+class Contributor(models.Model):
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    invitation_token = models.CharField(max_length=100, unique=True)
+    invited_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    contributor_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='contributors_user',blank=True,null=True)
+    memorials = models.ForeignKey(Deceased,on_delete=models.CASCADE, related_name='contributors',null=True,blank=True)
+   
 
 
 facts_choices = [
@@ -118,10 +130,13 @@ class PhotoAlbum(models.Model):
     title = models.CharField(max_length=100,null=True,blank=True)
     date = models.DateField(blank=True,null=True)
     image = models.ImageField(upload_to='Albums/',null=True,blank=True)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_photos', blank=True)
 
     def __str__(self):
         return self.title
 
+
+   
 
 
 class Biography(models.Model):
@@ -129,8 +144,15 @@ class Biography(models.Model):
     deceased = models.ForeignKey(Deceased,on_delete=models.CASCADE)
     body_text = models.TextField(null=True,blank=True)
     cover_photo = models.ImageField(null=True, blank=True,upload_to = 'CoverPhoto/')
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_cover', blank=True)
 
     def __str__(self):
         return self.deceased.first_name
 
         
+
+class Comments(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    photo = models.ForeignKey(PhotoAlbum,on_delete=models.CASCADE)
+    text = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)

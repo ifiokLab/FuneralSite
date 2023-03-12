@@ -70,9 +70,10 @@ function deleteFormsetRow(event) {
           formsetRow.remove();
           formset.querySelector('#id_biographyfacts_set-TOTAL_FORMS').value = formsetCount - 1;
           //window.location.href = `/create_biography/${deceased_url}/`
-          //setTimeout(function() {
-          //  location.reload();
-        //}, 1000);
+          console.log('ppc');
+          setTimeout(function() {
+            location.reload();
+          }, 500);
         //var edit = document.getElementById('edit-container');
         //edit.classList.add('show');
         } 

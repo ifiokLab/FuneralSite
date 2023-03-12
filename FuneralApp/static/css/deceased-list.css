@@ -15,6 +15,7 @@ html,body {
     margin: 0;
 }
 body{
+    
     font-family: 'Open Sans',sans-serif;
     color: #1A202C;
     background-color: #FFFFFF;
@@ -32,7 +33,7 @@ body{
 
 header{
     padding: 30px 7vw;
-    background-color: #4e5b6f;
+    background-color: #230c22;
     box-shadow: 0px 1px 5px gray;
     position: fixed;
     right: 0;
@@ -67,7 +68,7 @@ header .card2 .profile{
     border-radius: 50px;
     height: 40px;
     width: 40px;
-    color: #4e5b6f;
+    color: #230c22;
    display: flex;
    align-items: center;
    justify-content: center;
@@ -95,7 +96,7 @@ header .card2 .profile{
     border-bottom: solid #dfe1e6 1px;
     padding: 10px;
     font-size: 1.125rem;
-    color: #657287;
+    color: #3a183f;
 }
 
 .profile-card .body{
@@ -109,7 +110,7 @@ header .card2 .profile{
    padding: 7px;
    align-items: center;
    text-decoration: none;
-   color: #657287;
+   color: #3a183f;
 }
 .profile-card .body .items:hover{
     background-color: rgb(220, 220, 220,0.5);
@@ -125,7 +126,7 @@ header .card2 .profile:hover{
     background-color: #F7FAFC;
 }
 header .card2 .notification:hover{
-    color: #4e5b6f;
+    color: #230c22;
     background-color: #F7FAFC;
 }
 header .card2 .notification{
@@ -175,13 +176,13 @@ header .card2 .notification{
 .notification-wrapper .header .title{
     font-size: 1.5rem;
     font-weight: 700;
-    color: #657287;
+    color: #3a183f;
     font-family: 'Unna', serif;
 }
 
 .notification-wrapper .header button{
     background-color: transparent;
-    color: #657287;
+    color: #3a183f;
     font-size: 1.4rem;
     border: transparent;
     padding: 6px;
@@ -193,7 +194,7 @@ header .card2 .notification{
 }
 .notification-wrapper .body .empty{
     font-size: 1.1rem;
-    color: #657287;
+    color: #3a183f;
     font-family: 'Unna', serif;
 }
 
@@ -234,18 +235,19 @@ header .card2 .notification{
     font-weight: 700;
     font-family: 'Unna',serif;
     background-color: rgb(226, 229, 232);
-    color: #657287;
+    color: #3a183f;
     margin-right: 8px;
 }
 .body-container  .box1 .title{
     font-size: 1.87rem;
-    color: #657287;
+    color: #3a183f;
     font-weight: 700;
     font-family: 'Unna',serif;
 }
 .body-container  .box2 a{
     text-decoration: none;
-    background-color: #657287;
+    background-color: #3a183f;
+    
     padding: 13px 20px;
     border-radius: 8px;
     text-align: center;
@@ -256,7 +258,7 @@ header .card2 .notification{
 }
 
 .body-container .box2 a:hover{
-    background-color: #4e5b6f;
+    background-color: #230c22;
 }
 
 .body-container .card2 .mem-card{
@@ -267,9 +269,10 @@ header .card2 .notification{
 .body-container .card2 .mem-card button{
     padding: 10px;
     border: none;
-    border-bottom: solid 1px #4e5b6f;
+    border-bottom: solid 1px #230c22;;
     font-size: 1.2rem;
-    color: #657287;
+  
+    color: #3a183f;
     background-color: transparent;
 }
 .body-container .card2 .mem-snippet{
@@ -304,7 +307,7 @@ header .card2 .notification{
 
 .mem-snippet .box .card1 a{
     text-decoration: none;
-    color: #657287;
+    color: #3a183f;
     font-size: 1.3rem;
     font-weight: 700;
     font-family: 'Unna',serif;
@@ -312,17 +315,18 @@ header .card2 .notification{
 
 .mem-snippet .box .card1 p{
     margin: 2px 0;
-    color: #657287;
+    color: #3a183f;
     font-size: .9rem;
    
 }
 
 .mem-snippet .box .card1 .public{
     padding: 1px 5px;
-    color: #657287;
+    color: #3a183f;
     font-weight: 700;
     font-size: .8rem;
-    border: solid #657287 1px;
+    border: solid #3a183f 1px;
+  
    
 }
 .mem-snippet .box .card2{
@@ -340,7 +344,7 @@ header .card2 .notification{
     position:absolute;
     padding: 5px 0px;
     font-size: .8rem;
-    color: #657287;
+    color: #3a183f;
     border-radius: 12px;
     background-color: #F7FAFC;
     border: solid #dfe1e6 2px;

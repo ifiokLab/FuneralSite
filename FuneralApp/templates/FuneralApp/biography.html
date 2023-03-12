@@ -57,8 +57,17 @@
                     <p class="text">{{deceased.month_birth}} {{deceased.day_birth}}, {{deceased.year_birth}} - {{deceased.month_death}} {{deceased.day_death}}, {{deceased.year_death}}</p>
                     <div class="invite-card">
                         <div class="icon"><i class="fa-solid fa-user-group"></i></div>
+                        {% if contributor_count %}
+                            {% if contributor_count > 1 %}
+                                <div class="text">{{contributor_count}} contributors added</div>
+                            {% else %}
+                            <div class="text">{{contributor_count}} contributor added</div>
+                            {% endif %}
+                        {% else %}
                         <div class="text">No contributors yet</div>
-                        <a href="">Invite</a>
+                        {% endif %}
+                            
+                        <div style="cursor:pointer;text-decoration: underline;" onclick="show_invite()">Invite</div>
                     </div>
                     <div class="candle-card">
                         <img src="{% static 'images/candle_icon.webp' %}" alt="">
@@ -99,10 +108,10 @@
                             <div class="box1">Nkoyo's favorite hobbies</div>
                             <div class="box2">Add info</div>
                         </div>
-                        <div class="card2" onclick="editcontainer()">
-                           <div class="icon"> <i class="fa-solid fa-pen-to-square"></i></div>
-                            <div class="text">Edit</div>
-                        </div>
+                        <a href="{% url 'create-facts' deceased.id  %}" class="card2" >
+                            <div class="icon"> <i class="fa-solid fa-pen-to-square"></i></div>
+                             <div class="text">Edit</div>
+                         </a>
                     </div>
                     <div class="items">
                         <div class="card1">
@@ -156,39 +165,159 @@
                 
         </div>
     </div>
-    <div class="container2" >
-        <div class="wrapper">
-            <div class="card1">
-                <div class="text">Biography</div>
-            </div>
+    <div class="container2">
+        <div class="box-wrapper mySlides" >
             {% if parent.cover_photo %}
-           <div class="cover-image">
             <img src="{{parent.cover_photo.url}}" alt="">
-           </div>
             {% else %}
-            <div class="card2">
-                <img src="{% static 'images/placeholder-cover-photo-3.webp' %}" alt="">
-                <div class="text">No cover photo uploaded</div>
-            </div>
+            <img src="./after_old_photos_illustration.webp" alt=""><br>
             {% endif %}
-            <div class="card3">
-                <div class="btn-wrapper">
-                    <button>
+            <div class="back-overlay"></div>
+        
+            <div class="bio-header">
+                <div class="title">Biography </div>
+                
+            </div>
+            <div class="bottom-card">
+                
+                <div class="card2">
+                    <input type="hidden"  value="{{parent.id}}">
+                    <button class="like-cover" data-photo-id="{{ parent.id }}">
                         <i class="fa-sharp fa-regular fa-heart"></i>
                         <div class="text">Heart</div>
+                        <div class="num"></div>
                     </button>
 
-                    <button>
+                    <button class="share-btn">
                         <i class="fa-solid fa-share-nodes"></i>
                         <div class="text">Share</div>
                     </button>
                 </div>
             </div>
+        </div>
+        {% for photo in album %}
+        <div class="box-wrapper mySlides" >
+            {% if photo.image %}
+            <img src="{{photo.image.url}}" alt="">
+            {% endif %}
+           
+            <div class="bio-header">
+                <div class="title">{{photo.title}} </div>
+                <div class="date"> {{photo.date}} </div>
+                <input type="hidden" name="photo_id" value="{{photo.id}}">
+            </div>
+            <div class="back-overlay"></div>
+        
+            
+            <div class="bottom-card">
+                
+                <div class="card2">
+                    <button  class="fetch-comments-btn" data-photo-id="{{photo.id}}">
+                        <i class="fa-regular fa-comments fetch-comments-btn" data-photo-id="{{photo.id}}"></i>
+                        <div class="text fetch-comments-btn" data-photo-id="{{photo.id}}">Comments {{data.id}}</div>
+                    </button>
+                    <button class="like-btn" data-photo-id="{{ photo.id }}">
+                        <i class="fa-sharp fa-regular fa-heart"></i>
+                        <div class="text">Heart</div>
+                        <div class="num"></div>
+                    </button>
 
-            <div class="nav-btn">
-                <i class="fa-solid fa-chevron-right"></i>
+                    <button class="share-btn">
+                        <i class="fa-solid fa-share-nodes"></i>
+                        <div class="text">Share</div>
+                    </button>
+                </div>
             </div>
         </div>
+        {% endfor %}
+        <div class="box-wrapper mySlides" >
+           <!-- <img src="./Memorial/CreateMemorialBackground.webp" alt=""><br>-->
+            <div class="back-overlay"></div>
+            <div class="bio-text-container">
+                <div class="wrapper">
+                    <div class="header">
+                        <div class="in">In memory of </div>
+                        <div class="name">Nkoyo Ukem</div>
+                        {% if parent.cover_photo %}
+                        <img class="mem-img" src="{{parent.cover_photo.url}}" alt="">
+                        {% endif %}
+                        <div class="what">What can you do?</div>
+                    </div>
+                    
+
+                    <div class="items">
+                        <div class="title">Add Photos</div>
+                        <div class="text">Contribute with your photos, videos or stories to Nkoyo Ukem's Memorial to help Nkoyo's family and friends come back to more memories.</div>
+                        <div class="link-wrapper">
+                            <a href="{% url 'create-photo' deceased.id %}" class="links">
+                                <div class="icons"><i class="fa-regular fa-square-plus"></i></div>
+                                <div class="text">Add Photos</div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="items">
+                        <div class="title">Support</div>
+                        <div class="text">Light a candle to show your support for Nkoyo Ukem and ensure their memory lives on forever. Your contribution helps to keep our website free for all grieving families.</div>
+                        <div class="link-wrapper">
+                            <a href="" class="links">
+                                <div class="icons"><i class="fa-regular fa-square-plus"></i></div>
+                                <div class="text">Light a candle</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="items">
+                        <div class="title">Share</div>
+                        <div class="clip-board">
+                            <div class="texts">https://after.io/nkoyo-ukem</div>
+                            <div class="icon"><i class="fa-regular fa-square-plus"></i></div>
+                        </div>
+                        <div class="share-tray">
+                            <div class="box">
+                                <div class="icon"><i class="fa-brands fa-square-facebook"></i></div>
+                                <div class="texts">Messenger</div>
+                            </div>
+                            <div class="box">
+                                <div class="icon"><i class="fa-brands fa-square-facebook"></i></div>
+                                <div class="texts">Facebook</div>
+                            </div>
+                            <div class="box">
+                                <div class="icon"><i class="fa-brands fa-square-facebook"></i></div>
+                                <div class="texts">Whatsapp</div>
+                            </div>
+                            <div class="box">
+                                <div class="icon"><i class="fa-brands fa-twitter"></i></div>
+                                <div class="texts">Twitter</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="bio-header">
+                <div class="title">Some new...</div>
+                <div class="date">25th june,2021</div>
+            </div>
+            <div class="bottom-card">
+                
+                <div class="card2">
+                    <input type="hidden"  value="{{parent.id}}">
+                    <button class="like-cover" data-photo-id="{{ parent.id }}">
+                        <i class="fa-sharp fa-regular fa-heart"></i>
+                        <div class="text">Heart</div>
+                        <div class="num"></div>
+                    </button>
+
+                    <button class="share-btn">
+                        <i class="fa-solid fa-share-nodes"></i>
+                        <div class="text">Share</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="left-icon" onclick="plusDivs(-1)"><i class="fa-solid fa-chevron-left"></i></div>
+        <div class="right-icon" onclick="plusDivs(1)"><i class="fa-solid fa-chevron-right"></i></div>
+        
     </div>
     <div class="profile-modal" id="profile-modal" onclick="profile_modal()"></div>
 
@@ -216,7 +345,7 @@
             <div class="m-profile-card" id="m-profile-card">
                 <div class="header">Signed in as {{request.user}}</div>
                 <div class="body">
-                    <a href="" class="items">
+                    <a href="{% url 'memorials' %}" class="items">
                         <div class="icons"><i class="fa-solid fa-house"></i></div>
                         <div class="texts">Your Memorials</div>
                     </a>
@@ -236,7 +365,7 @@
                         <div class="icons"><i class="fa-solid fa-lock-keyhole"></i></div>
                         <div class="texts">Privacy policy</div>
                     </a>
-                    <a href="" class="items">
+                    <a href="{% url 'logout' %}" class="items">
                         <div class="icons"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
                         <div class="texts">Logout</div>
                     </a>
@@ -246,55 +375,222 @@
 
         </div>
 
-        <div class="m-body">
+        <div class="m-body m-slides">
+            <input type="hidden"  value="{{parent.id}}">
             {% if parent.cover_photo %}
             <div class="cover-image">
              <img src="{{parent.cover_photo.url}}" alt="">
             </div>
             {% else %}
-            <div class="img-card">
+            <div class="cover-image">
                 <img src="{% static 'images/placeholder-cover-photo-3.webp' %}" alt="">
+                <div class="text-cover">No cover photo uploaded</div>
             </div>
             {% endif %}
-            <div class="text-cover">No cover photo uploaded</div>
+            
             <div class="sub-card">
-             <div class="top-nav">
-                <div class="text">Biography</div>
-             </div>
-             
-             <div class="bottom-wrapper">
-                <div class="deceased">
-                    <h1>{{deceased.first_name}} {{deceased.last_name}}</h1>
-                    <p class="text">{{deceased.month_birth}} {{deceased.day_birth}}, {{deceased.year_birth}} - {{deceased.month_death}} {{deceased.day_death}}, {{deceased.death_year}}</p>
+                <div class="top-nav">
+                    <div class="text">Biography</div>
                 </div>
-                <div class="m-invite-card">
-                    <div class="icon"><i class="fa-solid fa-user-group"></i></div>
-                    <div class="text">No contributors yet</div>
-                    <a href="">Invite</a>
-                </div>
-                <div class="m-candle-card">
-                    <img src="{% static 'images/candle_icon.webp' %}" alt="">
-                    <div class="text">No candles lit yet.</div>
-                    <a href="">View</a>
-                </div>
-                <div class="bottom-nav">
-                    <div class="card1">
-                        <div class="items"> <i class="fa-sharp fa-regular fa-heart"></i></div>
-                        <div class="items"> 
-                            <i class="fa-sharp fa-regular fa-heart"></i>
-                            <span>1</span>
+                
+                <div class="bottom-wrapper">
+                    <div class="deceased">
+                        <h1>{{deceased.first_name}} {{deceased.last_name}}</h1>
+                        <p class="text">{{deceased.month_birth}} {{deceased.day_birth}}, {{deceased.year_birth}} - {{deceased.month_death}} {{deceased.day_death}}, {{deceased.year_death}}</p>
+                    </div>
+                    <div class="m-invite-card">
+                        <div class="icon"><i class="fa-solid fa-user-group"></i></div>
+                        <div class="text">No contributors yet</div>
+                        <div class="invite-a" style="cursor:pointer;text-decoration: underline;" onclick="show_invite()">Invite</div>
+                    </div>
+                    <div class="m-candle-card">
+                        <img src="{% static 'images/candle_icon.webp' %}" alt="">
+                        <div class="text">No candles lit yet.</div>
+                        <a href="">View</a>
+                    </div>
+                    <div class="bottom-nav">
+                       
+                        <div class="card1">
+                            <!--<div class="items"><i class="fa-regular fa-comments"></i></div>-->
+                            <div class="items like-cover" data-photo-id="{{ parent.id }}"> 
+                                <i class="fa-sharp fa-regular fa-heart"></i>
+                                <span class="num">1</span>
+                            </div>
+                            <div class="items share-btn" >
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </div>
+                           
                         </div>
-                        <div class="items">Add a comment...</div>
-                    </div>
-    
-                    <div class="card2">
-                        <i class="fa-solid fa-share-nodes"></i>
+                       
                     </div>
                 </div>
-             </div>
+            </div>
+            <div class="left" onclick="m_plusDivs(-1)">
+                <i class="fa-solid fa-arrow-left"></i>
+            </div>
+            <div class="right" onclick="m_plusDivs(1)">
+                <i class="fa-solid fa-arrow-right"></i>
             </div>
         </div>
-        <div class="btn-card">
+        {% for photo in album %}
+        <div class="m-body m-slides">
+            <input type="hidden" value="{{photo.id}}">
+            {% if photo.image %}
+            <div class="cover-image">
+             <img src="{{photo.image.url}}" alt="">
+            </div>
+            {% endif %}
+            
+            <div class="sub-card">
+                <div class="top-nav">
+                    <div class="text">Biography</div>
+                </div>
+                
+                <div class="bottom-wrapper">
+                    <div class="deceased">
+                        <p class="text">{{deceased.first_name}}'s Memorial</p>
+                        <h1>{{photo.title}}</h1>
+                        <p class="text">{{photo.date}}</p>
+                    </div>
+                   
+                    <div class="bottom-nav">
+                       
+                        <div class="card1">
+                            <div class="items m-fetch-comments-btn" data-photo-id="{{photo.id}}">
+                                <i class="fa-regular fa-comments m-fetch-comments-btn" data-photo-id="{{photo.id}}"></i>
+                               
+                            </div>
+                            <div class="items like-btn" data-photo-id="{{ photo.id }}"> 
+                                <i class="fa-sharp fa-regular fa-heart"></i>
+                                <span class="num">1</span>
+                            </div>
+                            <div class="items share-btn">
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </div>
+                           
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="left" onclick="m_plusDivs(-1)">
+                <i class="fa-solid fa-arrow-left"></i>
+            </div>
+            <div class="right" onclick="m_plusDivs(1)">
+                <i class="fa-solid fa-arrow-right"></i>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="m-body m-slides">
+            <input type="hidden"  value="{{parent.id}}">
+            
+            {% if parent.cover_photo %}
+            <div class="cover-image">
+             <img src="{{parent.cover_photo.url}}" alt="">
+            </div>
+            {% else %}
+            <div class="cover-image">
+                <img src="{% static 'images/placeholder-cover-photo-3.webp' %}" alt="">
+                <div class="text-cover">No cover photo uploaded</div>
+            </div>
+            {% endif %}
+            
+            <div class="sub-card">
+                <div class="top-nav">
+                    <div class="text">Biography</div>
+                </div>
+
+                <div class="wrapper">
+                    <div class="header">
+                        <div class="in">In memory of </div>
+                        <div class="name">{{deceased.first_name}} {{deceased.last_name}}</div>
+                        {% if parent.cover_photo %}
+                        <img class="mem-img" src="{{parent.cover_photo.url}}" alt="">
+                        {% endif %}
+                        <div class="what">What can you do?</div>
+                    </div>
+                    <div class="items">
+                        <div class="title">Add Photos</div>
+                        <div class="text">Contribute with your photos, videos or stories to {{deceased.first_name}} {{deceased.last_name}}'s Memorial to help {{deceased.first_name}}'s family and friends come back to more memories.</div>
+                        <div class="link-wrapper">
+                            <a href="{% url 'create-photo' deceased.id %}" class="links">
+                                <div class="icons"><i class="fa-regular fa-square-plus"></i></div>
+                                <div class="text">Add Photos</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="items">
+                        <div class="title">Support</div>
+                        <div class="text">Light a candle to show your support for {{deceased.first_name}} {{deceased.last_name}} and ensure their memory lives on forever. Your contribution helps to keep our website free for all grieving families.</div>
+                        <div class="link-wrapper">
+                            <a href="" class="links">
+                                <div class="icons"><i class="fa-regular fa-square-plus"></i></div>
+                                <div class="text">Light a candle</div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="items">
+                        <div class="title">Share</div>
+                        <div class="clip-board">
+                            <div class="texts" id="copy-text-m">https://after.io/nkoyo-ukem</div>
+                            <div class="icon" id="clip-board-m" >
+                                <i class="fa-regular fa-square-plus">
+                                <div id="copied-m">Copied!</div>
+                            </i></div>
+                            
+                        </div>
+                        
+                        <div class="share-tray">
+                            <div class="box">
+                                <div class="icon"><i class="fa-brands fa-square-facebook"></i></div>
+                                <div class="texts">Messenger</div>
+                            </div>
+                            <div class="box">
+                                <div class="icon"><i class="fa-brands fa-square-facebook"></i></div>
+                                <div class="texts">Facebook</div>
+                            </div>
+                            <div class="box">
+                                <div class="icon"><i class="fa-brands fa-square-facebook"></i></div>
+                                <div class="texts">Whatsapp</div>
+                            </div>
+                            <div class="box">
+                                <div class="icon"><i class="fa-brands fa-twitter"></i></div>
+                                <div class="texts">Twitter</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bottom-wrapper">
+                   
+                    <div class="bottom-nav">
+                       
+                        <div class="card1">
+                             <!--<div class="items"><i class="fa-regular fa-comments"></i></div>-->
+                            <div class="items like-cover" data-photo-id="{{ parent.id }}"> 
+                                <i class="fa-sharp fa-regular fa-heart"></i>
+                                <span class="num">1</span>
+                            </div>
+                            <div class="items share-btn">
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </div>
+                           
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="left" onclick="m_plusDivs(-1)">
+                <i class="fa-solid fa-arrow-left"></i>
+            </div>
+            <div class="right" onclick="m_plusDivs(1)">
+                <i class="fa-solid fa-arrow-right"></i>
+            </div>
+        </div>
+
+        <div class="btn-card mobile-btn-card">
             <a href="" class="btn one">
              <div class="icon"><i class="fa-solid fa-place-of-worship"></i></div>
              <div class="text">Add Ceremony</div>
@@ -304,7 +600,7 @@
              <div class="text">Memorials Settings</div>
             </a>
            
-           </div>
+        </div>
            
            <div class="fact-card">
             {% if biography_facts %}
@@ -340,9 +636,9 @@
              <div class="items">
                  <div class="card1">
                      <div class="box1">Biography</div>
-                     <div class="box2" onclick="editcontainer()">Add info</div>
+                     <div class="box2" onclick="m_editcontainer(event)">Add info</div>
                  </div>
-                 <div class="card2" onclick="editcontainer()">
+                 <div class="card2" onclick="m_editcontainer(event)">
                     <div class="icon"> <i class="fa-solid fa-pen-to-square"></i></div>
                      <div class="text">Edit</div>
                  </div>
@@ -369,7 +665,7 @@
     <div class="profile-card" id="profile-card">
         <div class="header">Signed in as {{request.user}}</div>
         <div class="body">
-            <a href="" class="items">
+            <a href="{% url 'memorials' %}" class="items">
                 <div class="icons"><i class="fa-solid fa-house"></i></div>
                 <div class="texts">Your Memorials</div>
             </a>
@@ -389,7 +685,7 @@
                 <div class="icons"><i class="fa-solid fa-lock-keyhole"></i></div>
                 <div class="texts">Privacy policy</div>
             </a>
-            <a href="" class="items">
+            <a href="{% url 'logout' %}" class="items">
                 <div class="icons"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
                 <div class="texts">Logout</div>
             </a>
@@ -448,9 +744,207 @@
     </div>
 
    
+    <form action="" class="comment-container" id="comment-container">
+        {% csrf_token %}
+        <div class="header">
+            <div class="card1">
+                <div class="icon">
+                    <i class="fa-sharp fa-regular fa-comments"></i>
+                </div>
+                <div class="text">Comment on this Photo</div>
+            </div>
 
-   
+            <div class="card2" onclick="hide_comment()">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+        </div>
+        <div class="body comment-box">
+          <!-- <div class="comment-card">
+                <div class="card1">
+                    <div class="box1">
+                        <div class="icon">IU</div>
+                        <div class="user-box">
+                            <div class="name">Ifiok Udoh</div>
+                            <div class="time">Posted 23 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="box2" onclick="show_delete()"><i class="fa-solid fa-ellipsis"></i></div>
+                </div>
+                <div class="card2">
+                    <div class="text comment-text">Lovely</div>
+                </div>
+                <div class="delete-card" id="delete-card">
+                    <div class="icon"><i class="fa-solid fa-trash"></i></div>
+                    <div class="text">Delete</div>
+                </div>
+                </div>
+            -->
+        </div>
+        <div class="bottom-nav">
+            <div class="card1">
+                <textarea name="comment_content" id="textarea" cols="38" rows="4" placeholder="What do you feel viewing this Photo?"></textarea>
+            </div>
+            <div class="card2">
+                <button>Post</button>
+            </div>
+        </div>
+       
+        <div class="comment-modal" id="comment-modal" ></div>
+    </form>
 
+
+    <form action="" class="m-comment-container" id="m-comment-container" >
+        {% csrf_token %}
+        <div class="header">
+            <div class="card1">
+                <div class="icon">
+                    <i class="fa-sharp fa-regular fa-comments"></i>
+                </div>
+                <div class="text">Comment on this Photo</div>
+            </div>
+
+            <div class="card2" onclick="m_hide_comment()">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+        </div>
+        <div class="body m-comment-box">
+          <!-- <div class="comment-card">
+                <div class="card1">
+                    <div class="box1">
+                        <div class="icon">IU</div>
+                        <div class="user-box">
+                            <div class="name">Ifiok Udoh</div>
+                            <div class="time">Posted 23 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="box2" onclick="show_delete()"><i class="fa-solid fa-ellipsis"></i></div>
+                </div>
+                <div class="card2">
+                    <div class="text comment-text">Lovely</div>
+                </div>
+                <div class="delete-card" id="delete-card">
+                    <div class="icon"><i class="fa-solid fa-trash"></i></div>
+                    <div class="text">Delete</div>
+                </div>
+                </div>
+            -->
+        </div>
+        <div class="bottom-nav">
+            <div class="card1">
+                <textarea name="m_comment_content" id="textarea" cols="38" rows="4" placeholder="What do you feel viewing this Photo?"></textarea>
+            </div>
+            <div class="card2">
+                <button>Post</button>
+            </div>
+        </div>
+       
+        <div class="m-comment-modal" id="m-comment-modal" ></div>
+    </form>
+
+    <div class="invite-container" id="invite-container" >
+        <div class="invite-wrapper">
+            <div class="card1" onclick="close_invite()">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+            <div class="card2">
+                <div class="contribute-card">
+                    <div class="header">Invite to contribute</div>
+                    <div class="invite-text">Share Nkoyo's Memorial so others can share photos and videos of Nkoyo and post meaningful life events to the timeline.</div>
+                    <div class="invite-link">
+                        <div class="card-a" id="copy-text">https://after.io/nkoyo-ukem</div>
+                        <div class="card-b" id="clip-board">
+                            <i class="fa-sharp fa-regular fa-clipboard"></i>
+                            <div id="copied">Copied!</div>
+                        </div>
+                    </div>
+                </div>
+                <form class="add-user" action="" id="invite-form">
+                    {% csrf_token %}
+                    <div class="header">Add users</div>
+                    <div class="invite-text">
+                        Invited users can share photos and videos, manage the memorial and its memories, and invite others who knew Nkoyo to contribute as well.
+                    </div>
+                   <div  class="form">
+                        <input type="hidden" name="memorials" id="memorials-value" value="{{deceased.id}}">
+                        <div class="box1">
+                            <div>Name</div>
+                            <div class="name-card">
+                                {{inviteForm.name}}
+                            </div>
+                        </div>
+                        <div class="box2">
+                            <div>Email</div>
+                            <div class="name-card">
+                                {{inviteForm.email}}
+                            </div>
+                        </div>
+                   
+                    </div>
+                    <div class="send">
+                        <button>send invitation</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card3"></div>
+        </div>
+    </div>
+
+    <div class="share-container" id="share-container">
+        <div class="share-wrapper">
+            <div class="card1" onclick="close_share()">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+            <div class="card2">
+                <div class="box1">
+                    <h2>Share</h2>
+                    <p>Nkoyo Ukem's Memorial</p>
+                </div>
+                <div class="box2">
+                    <div class="items-share" onclick="share_messenger(fname = '{{deceased.first_name}}',lname = '{{deceased.last_name}}',month = '{{deceased.month_death}}',year = '{{deceased.year_death}}',url='http://127.0.0.1:8000/create_biography/{{deceased.id}}')">
+                        <div class="icon">
+                            <svg width="53" height="53" fill="none" xmlns="http://www.w3.org/2000/svg" transform="scale(0.75)"><path d="M26.498 0C11.573 0 0 10.937 0 25.703c0 7.724 3.166 14.401 8.32 19.012.43.384.696.927.71 1.51l.145 4.717a2.118 2.118 0 0 0 2.974 1.874l5.26-2.318a2.13 2.13 0 0 1 1.418-.106 28.987 28.987 0 0 0 7.67 1.02c14.925 0 26.498-10.937 26.498-25.703C52.995 10.944 41.423 0 26.498 0Z" fill="url(#messengerIcon_svg__a)"></path><path d="m10.586 33.221 7.783-12.347a3.977 3.977 0 0 1 5.75-1.06l6.194 4.643a1.59 1.59 0 0 0 1.915-.006l8.36-6.346c1.113-.848 2.57.49 1.828 1.675l-7.79 12.342a3.977 3.977 0 0 1-5.75 1.06l-6.194-4.644a1.59 1.59 0 0 0-1.915.007l-8.36 6.346c-1.112.848-2.57-.484-1.821-1.67Z" fill="#fff"></path><defs><radialGradient id="messengerIcon_svg__a" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(57.7437 0 0 57.7436 10.202 52.707)"><stop stop-color="#09F"></stop><stop offset="0.61" stop-color="#A033FF"></stop><stop offset="0.935" stop-color="#FF5280"></stop><stop offset="1" stop-color="#FF7061"></stop></radialGradient></defs></svg>
+                        </div>
+                        <div class="text">Messenger</div>
+                    </div>
+                    <div class="items-share" onclick="share_facebook(fname = '{{deceased.first_name}}',lname = '{{deceased.last_name}}',month = '{{deceased.month_death}}',year = '{{deceased.year_death}}',url='http://127.0.0.1:8000/create_biography/{{deceased.id}}')">
+                        <div class="icon">
+                            <svg width="53" height="53" fill="none" xmlns="http://www.w3.org/2000/svg" transform="scale(0.75)"><path d="M53 26.5C53 11.863 41.137 0 26.5 0S0 11.863 0 26.5c0 13.23 9.69 24.192 22.36 26.18V34.16h-6.73V26.5h6.73v-5.838c0-6.64 3.954-10.31 10.01-10.31 2.898 0 5.93.517 5.93.517v6.522h-3.343c-3.292 0-4.316 2.044-4.316 4.14V26.5h7.35l-1.176 7.66h-6.174v18.52C43.31 50.691 53 39.73 53 26.5Z" fill="#1877F2"></path><path d="m36.815 34.16 1.175-7.66h-7.35v-4.969c0-2.096 1.026-4.14 4.317-4.14h3.344v-6.522s-3.033-.517-5.932-.517c-6.055 0-10.01 3.67-10.01 10.31V26.5h-6.728v7.66h6.728v18.52c1.351.211 2.733.32 4.141.32s2.79-.109 4.14-.32V34.16h6.175Z" fill="#fff"></path></svg>
+                        </div>
+                        <div class="text">Facebook</div>
+                    </div>
+                    <div class="items-share" onclick="share_whatsapp(fname = '{{deceased.first_name}}',lname = '{{deceased.last_name}}',month = '{{deceased.month_death}}',year = '{{deceased.year_death}}',url='http://127.0.0.1:8000/create_biography/{{deceased.id}}')">
+                        <div class="icon">
+                            <svg width="53" height="53" fill="none" xmlns="http://www.w3.org/2000/svg" transform="scale(0.75)"><path d="M26.5 53C41.136 53 53 41.136 53 26.5S41.136 0 26.5 0 0 11.864 0 26.5 11.864 53 26.5 53Z" fill="#25D366"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M27.373 41.243h-.006c-2.637 0-5.229-.662-7.53-1.918l-8.354 2.192 2.236-8.166a15.73 15.73 0 0 1-2.104-7.878c.004-8.688 7.073-15.756 15.758-15.756a15.655 15.655 0 0 1 11.147 4.621 15.662 15.662 0 0 1 4.611 11.148c-.003 8.686-7.07 15.754-15.758 15.757Zm-7.15-4.77.479.284a13.077 13.077 0 0 0 6.666 1.825h.005c7.22 0 13.095-5.875 13.097-13.097.002-3.5-1.36-6.79-3.832-9.266a13.007 13.007 0 0 0-9.26-3.84c-7.224 0-13.1 5.874-13.102 13.095a13.065 13.065 0 0 0 2.002 6.97l.312.496-1.323 4.833 4.957-1.3Zm14.55-7.595c.274.133.46.223.54.355.097.164.097.953-.23 1.872-.329.92-1.902 1.76-2.658 1.872-.678.102-1.537.144-2.48-.156a22.604 22.604 0 0 1-2.245-.829c-3.69-1.594-6.185-5.171-6.657-5.848a4.507 4.507 0 0 0-.069-.097l-.003-.004c-.208-.278-1.605-2.141-1.605-4.07 0-1.813.891-2.764 1.302-3.201l.076-.083c.361-.394.788-.493 1.05-.493.263 0 .526.003.755.014.028.002.058.002.088.001.23 0 .516-.003.798.675.109.261.267.648.435 1.056.339.825.713 1.736.779 1.868.098.197.164.427.033.69l-.056.112c-.098.201-.17.349-.338.544-.066.077-.134.16-.202.243-.135.165-.27.33-.389.447-.197.197-.402.41-.172.804.23.394 1.02 1.683 2.19 2.727a10.17 10.17 0 0 0 2.906 1.837c.109.047.196.085.26.117.394.198.624.165.854-.098.23-.263.984-1.15 1.246-1.544.263-.394.525-.328.886-.197.361.132 2.297 1.084 2.69 1.281l.216.105Z" fill="#FDFDFD"></path></svg>
+                        </div>
+                        <div class="text">Whatsapp </div>
+                    </div>
+
+                    <div class="items-share" onclick="share_mail(fname = '{{deceased.first_name}}',lname = '{{deceased.last_name}}',month = '{{deceased.month_death}}',year = '{{deceased.year_death}}',url='http://127.0.0.1:8000/create_biography/{{deceased.id}}' )">
+                        <div class="icon">
+                            <svg width="53" height="53" fill="none" xmlns="http://www.w3.org/2000/svg" transform="scale(0.75)"><rect width="53" height="53" rx="26.5" fill="#AAB8CB"></rect><path fill-rule="evenodd" clip-rule="evenodd" d="M16 18.002a1.5 1.5 0 0 0-1.5 1.5v15a1.5 1.5 0 0 0 1.5 1.5h21a1.5 1.5 0 0 0 1.5-1.5v-15a1.5 1.5 0 0 0-1.5-1.5H16Zm-3.5 1.5a3.5 3.5 0 0 1 3.5-3.5h21a3.5 3.5 0 0 1 3.5 3.5v15a3.5 3.5 0 0 1-3.5 3.5H16a3.5 3.5 0 0 1-3.5-3.5v-15Z" fill="#fff"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M16.71 20.388a1 1 0 0 1 1.404-.176l8.386 6.523 8.386-6.523a1 1 0 1 1 1.228 1.58l-9 7a1 1 0 0 1-1.228 0l-9-7a1 1 0 0 1-.176-1.404Z" fill="#fff"></path></svg>
+                        </div>
+                        <div class="text">Mail</div>
+                    </div>
+                    <div class="items-share" onclick="share_twitter(fname = '{{deceased.first_name}}',lname = '{{deceased.last_name}}',month = '{{deceased.month_death}}',year = '{{deceased.year_death}}',url='http://127.0.0.1:8000/create_biography/{{deceased.id}}' )">
+                        <div class="icon">
+                            <svg width="53" height="53" fill="none" xmlns="http://www.w3.org/2000/svg" transform="scale(0.75)"><path d="M0 26.5C0 11.864 11.864 0 26.5 0S53 11.864 53 26.5 41.136 53 26.5 53 0 41.136 0 26.5Z" fill="#55ACEE"></path><path d="m25.706 21.54.056.916-.927-.112c-3.373-.43-6.32-1.89-8.823-4.341l-1.223-1.217-.316.899c-.667 2.002-.24 4.117 1.15 5.539.741.786.574.898-.705.43-.445-.15-.834-.262-.87-.206-.13.131.314 1.834.666 2.508.482.936 1.465 1.853 2.54 2.395l.908.43-1.075.02c-1.038 0-1.075.018-.964.411.37 1.216 1.835 2.508 3.466 3.07l1.15.392-1.001.599a10.436 10.436 0 0 1-4.968 1.385c-.834.018-1.52.093-1.52.15 0 .187 2.261 1.234 3.578 1.646 3.948 1.217 8.637.693 12.16-1.385 2.502-1.478 5.004-4.416 6.172-7.26.63-1.516 1.26-4.286 1.26-5.614 0-.861.056-.974 1.094-2.003.612-.599 1.186-1.254 1.297-1.44.186-.356.167-.356-.778-.038-1.576.561-1.798.486-1.02-.356.575-.599 1.26-1.684 1.26-2.002 0-.056-.277.037-.592.206-.334.187-1.075.468-1.631.636l-1.001.318-.909-.617c-.5-.337-1.205-.712-1.575-.824-.946-.262-2.391-.224-3.244.075-2.317.842-3.782 3.013-3.615 5.39Z" fill="#fff"></path></svg>
+                        </div>
+                        <div class="text">Twitter</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card3">
+                <div class="url">URL for sharing</div>
+                <div class="invite-link">
+                    <div class="card-a" id="copy-text-b">https://after.io/nkoyo-ukem</div>
+                    <div class="card-b" id="clip-board-b" >
+                        <i class="fa-sharp fa-regular fa-clipboard"></i>
+                        <div id="copied-b">Copied!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
    
 </body>
 <script src="{% static 'javascript/biography.js' %}"></script>

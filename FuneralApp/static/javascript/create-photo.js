@@ -85,9 +85,10 @@ function deleteFormsetRow(event) {
           formsetRow.remove();
           formset.querySelector('#id_photoalbum_set-TOTAL_FORMS').value = formsetCount - 1;
           //window.location.href = `/create_biography/${deceased_url}/`
-          //setTimeout(function() {
-          //  location.reload();
-        //}, 1000);
+          
+          setTimeout(function() {
+            location.reload();
+          }, 500);
         //var edit = document.getElementById('edit-container');
         //edit.classList.add('show');
         } 

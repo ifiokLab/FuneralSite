@@ -61,6 +61,7 @@ body{
 
 
 #messages {
+   
     position: fixed;
     top: 0;
     left: 0;
@@ -75,18 +76,19 @@ body{
 
 .photo-container .header .title{
     font-size: 1.3rem;
-    color: #4e5b6f;
+    color: #230c22;
     font-weight: 700;
     font-family: 'Unna',serif;
 }
 
 .photo-container .btn-x{
     font-size: 1.2rem;
-    color: #4e5b6f;
+    color: #230c22;
     font-weight: 700;
     font-family: 'Unna',serif;
     text-align: center;
     padding: 5px;
+
 }
 
 
@@ -139,7 +141,7 @@ body{
 }
 
 .photo-wrapper .box-a .card1 .desc:focus,select:focus{
-    outline:solid #657287 3px;
+    outline:solid #3a183f 3px;
     border: transparent;
 }
 .photo-wrapper .box-a .card2{
@@ -162,7 +164,7 @@ body{
     padding: 12px;
     justify-content: center;
     background-color: rgb(226, 229, 232);
-    color: #657287;
+    color: #3a183f;
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
@@ -188,7 +190,7 @@ body{
 }
 
 .photo-container .footer button{
-    background-color: #657287;
+    background-color: #3a183f;
     color: white;
     padding: 16px 30px;
     font-weight: 700;
@@ -196,7 +198,8 @@ body{
     border: transparent;
     border-radius: 6px;
     cursor: pointer;
+  
 }
 .photo-container .footer button:hover{
-    background-color: #4e5b6f;
+    background-color: #230c22;
 }

@@ -15,7 +15,7 @@ html,body {
 }
 body{
     font-family: 'Open Sans',sans-serif;
-    color: #1A202C;
+    color: #230c22;
     background-color: #FFFFFF;
     transition-property: background-color;
     line-height: 1.5;
@@ -27,13 +27,14 @@ body{
 
 header{
     padding: 30px 7vw;
-    background-color: #4e5b6f;
+     background-color: #230c22;
     box-shadow: 0px 1px 5px gray;
     position: fixed;
     right: 0;
     left: 0;
     top: 0;
     z-index: 100;
+    
 }
 
 .header-container{
@@ -47,6 +48,7 @@ header{
     color: #657287;
     font-family: 'Unna', serif;
     color: white;
+   
 }
 .header-container .card2 a{
     text-decoration: none;
@@ -65,8 +67,9 @@ header{
 footer{
     display: flex;
     padding: 5rem 10vw 5rem 5vw;
-    background-color: #4e5b6f;
+    background-color: #230c22;
     color: white;
+    
 }
  footer .card1{
     flex-grow: 1;
@@ -128,11 +131,12 @@ footer .card1 .icon-card a{
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #657287;
+    background-color: #230c22;
     z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
+   
 }
 
 .spinner {

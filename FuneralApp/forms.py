@@ -97,13 +97,7 @@ widgets={'title': forms.TextInput(attrs={
             'type':'date',
                 
         }),
-        'image': forms.TextInput(attrs={
-            'class': 'desc',
-            'title': 'Upload Photo',
-            'type':'file',
-            'accept':'image*/'
-                
-        })
+       
     })
 
 
@@ -120,18 +114,7 @@ class BiographyForm(ModelForm):
 
 
 
-from django.forms import modelformset_factory
-'''
-
-FactsFormset = modelformset_factory(
-    model = BiographyFacts,form=FactsForm,
-    fields=('facts', 'description','user','deceased','id'),
-    extra=1,
-    widgets={'description': forms.TextInput(attrs={
-            'class': 'desc',
-            'placeholder': 'Description'
-        })
-    }
-) 
-
-'''
+class ContributorForm(forms.ModelForm):
+    class Meta:
+        model = Contributor
+        fields = ['name', 'email','memorials',]

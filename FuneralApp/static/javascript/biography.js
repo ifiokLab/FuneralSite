@@ -1,3 +1,103 @@
+function share_clip(){
+  const textToCopy = document.getElementById('copy-text-b').innerHTML;
+  navigator.clipboard.writeText(textToCopy)
+  .then(() => {
+      console.log("Text copied to clipboard successfully");
+      document.getElementById('copied-b').style.display = 'block';
+      console.log(document.getElementById('copied-b').style.display = 'block');
+      setTimeout(function() {
+          document.getElementById('copied-b').style.display = 'none';
+      }, 1000);
+  })
+  .catch((error) => {
+      console.error("Error copying text to clipboard: ", error);
+  });
+}
+
+document.getElementById('clip-board-b').addEventListener('click',()=>{
+  const textToCopy = document.getElementById('copy-text-b').innerHTML;
+
+  navigator.clipboard.writeText(textToCopy)
+  .then(() => {
+      console.log("Text copied to clipboard successfully");
+      document.getElementById('copied-b').style.display = 'block';
+      setTimeout(function() {
+          document.getElementById('copied-b').style.display = 'none';
+      }, 1000);
+  })
+  .catch((error) => {
+      console.error("Error copying text to clipboard: ", error);
+  });
+});
+
+document.getElementById('share-container').addEventListener('click',(event)=>{
+  if(event.target.className == 'share-container'){
+      document.getElementById('share-container').style.display = 'none';
+  }
+  
+})
+
+
+function close_share(){
+  document.getElementById('share-container').style.display = 'none';
+}
+
+
+
+document.querySelectorAll('.share-btn').forEach(button => {
+  button.addEventListener('click', event => {
+    console.log(button);
+    document.getElementById('share-container').style.display = 'flex';
+  });
+});
+
+function share_whatsapp(fname,lname,month,year,url){
+  const message = `Please help us honor the life of ${fname} ${lname}, who passed away on ${month},${year}. by visiting their memorial. ${url} #memorial #restinpeace`;
+  const shareUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+
+  window.open(shareUrl, "_blank");
+}
+
+function share_messenger(fname,lname,month,year,url){
+  const message = `Please help us honor the life of ${fname} ${lname}, who passed away on ${month},${year}. by visiting their memorial. ${url} #memorial #restinpeace`;
+  const shareUrl = `fb-messenger://share/?link=${encodeURIComponent(window.location.href)}&app_id=${encodeURIComponent('futurism.pythonanywhere.com')}&quote=${encodeURIComponent(message)}`;
+
+  window.open(shareUrl, "_blank");
+}
+
+
+function share_facebook(fname,lname,month,year,url){
+  const message = `Please help us honor the life of ${fname} ${lname}, who passed away on ${month},${year}. by visiting their memorial. ${url} #memorial #restinpeace`;
+  const shareUrl = `https://www.facebook.com/sharer.php?u=${encodeURIComponent(message)}`;
+
+  window.open(shareUrl, "_blank");
+}
+
+
+function share_twitter(fname,lname,month,year,url){
+  const message = `Please help us honor the life of ${fname} ${lname}, who passed away on ${month},${year}. by visiting their memorial. ${url} #memorial #restinpeace`;
+  const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`;
+
+  window.open(shareUrl, "_blank");
+}
+
+
+function share_mail(fname,lname,month,year,url){
+  const message = `Please help us honor the life of ${fname} ${lname}, who passed away on ${month},${year}. by visiting their memorial. ${url} #memorial #restinpeace`;
+
+  const subject = `Memorial for ${fname} ${lname}`;
+
+  // Define the email address to send to
+  const emailAddress = "ifiokudoh77@gmail.com";
+  const shareUrl = `mailto:${emailAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}%0D%0A%0D%0A${encodeURIComponent(window.location.href)}`;
+
+  window.open(shareUrl, "_blank");
+}
+
+
+
+
+
 
 function profile(){
     var element = document.getElementById('profile-card');
@@ -7,6 +107,40 @@ function profile(){
    
     
 }
+
+function show_invite(){
+  var element  = document.getElementById('invite-container');
+  element.style.display = 'flex';
+}
+
+function close_invite(){
+  document.getElementById('invite-container').style.display = 'none';
+}
+document.getElementById('invite-container').addEventListener('click',(event)=>{
+  //document.getElementById('invite-container').style.display = 'none';
+  if(event.target.className === 'invite-container') {
+      document.getElementById('invite-container').style.display = 'none';
+    }
+});
+
+
+
+document.getElementById('clip-board').addEventListener('click',()=>{
+  const textToCopy = document.getElementById('copy-text').innerHTML;
+
+  navigator.clipboard.writeText(textToCopy)
+  .then(() => {
+    
+      document.getElementById('copied').style.display = 'block';
+      setTimeout(function() {
+          document.getElementById('copied').style.display = 'none';
+      }, 1000);
+  })
+  .catch((error) => {
+      console.error("Error copying text to clipboard: ", error);
+  });
+})
+
 
 function profile_modal(){
     var element = document.getElementById('profile-card');
@@ -41,9 +175,19 @@ function close_not(event){
 
 
 
+
 function editcontainer(){
-    var edit = document.getElementById('edit-container');
-    edit.classList.add('show');
+  var edit = document.getElementById('edit-container');
+  edit.classList.add('show');
+}
+
+function m_editcontainer(event){
+  console.log('eve',event)
+  const x = event.clientX;
+  const y = event.clientY;
+  var edit = document.getElementById('edit-container');
+  edit.style.top = `${y+50}px` ;
+  edit.classList.add('show');
 }
 
 
@@ -74,321 +218,1326 @@ if (messages) {
 
 
 
+//function show_comment(){
+  //var element  =  document.getElementById('comment-container');
+  //element.classList.add('show');
+//}
 
-
-
-/*
-  if (formsetCount > 1) {
-    deleteBtns.forEach(btn=>{
-      const formsetId = btn.getAttribute('data-formset-id');
-      if(formsetId === 'None'){
-        formsetRow.remove();
-        formset.querySelector('#id_biographyfacts_set-TOTAL_FORMS').value = formsetCount - 1;
-        console.log(formsetId);
-      }
-      else{
-        const url = `/delete-biography/${formsetId}/`; // Change this to the URL for deleting the formset
-        fetch(url, {
-          method: 'DELETE',
-          headers: {
-              'Content-Type': 'application/json',
-              'X-CSRFToken': csrftoken // You need to set the CSRF token here
-          }
-      })
-      .then(response => {
-        if (response.ok) {
-          // The formset was successfully deleted, so remove the corresponding HTML element
-          formsetRow.remove();
-          formset.querySelector('#id_biographyfacts_set-TOTAL_FORMS').value = formsetCount - 1;
-          //window.location.href = `/create_biography/${deceased_url}/`
-          //setTimeout(function() {
-          //  location.reload();
-        //}, 1000);
-        //var edit = document.getElementById('edit-container');
-        //edit.classList.add('show');
-        } 
-        else {
-            // Handle the error if the formset wasn't deleted
-            console.log('not deleted.......!');
-        }
-      })
-      .catch(error => {
-          // Handle the error if the AJAX request failed
-          console.log('ajax request failed!',error);
-        
-      });
-      }
-      
-    });
-    //formsetRow.remove();
-    //formset.querySelector('#id_form-TOTAL_FORMS').value = formsetCount - 1;
-  } */
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-
-
-function deleteFormsetRow(event) {
-  const formsetRow = event.target.closest('.formset-row');
-  const formsetCount = parseInt(formset.querySelector('#id_form-TOTAL_FORMS').value);
-  
-  //const formsetId = deleteBtns.getAttribute('data-formset-id');
-  const deceased_url = document.getElementById('deceased-id').value;
-  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-  deleteBtns.forEach(deleteBtn => {
-  const formsetId = deleteBtn.getAttribute('data-formset-id');
-  const url = `/delete-biography/${formsetId}/`; // Change this to the URL for deleting the formset
-    if (formsetCount > 1) {
-      fetch(url, {
-              method: 'DELETE',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRFToken': csrftoken // You need to set the CSRF token here
-              }
-          })
-          .then(response => {
-              if (response.ok) {
-                  // The formset was successfully deleted, so remove the corresponding HTML element
-                  formsetRow.remove();
-                  formset.querySelector('#id_form-TOTAL_FORMS').value = formsetCount - 1;
-                  //window.location.href = `/create_biography/${deceased_url}/`
-                  setTimeout(function() {
-                    location.reload();
-                }, 1000);
-              } else {
-                  // Handle the error if the formset wasn't deleted
-                  console.log('not deleted!');
-              }
-          })
-          .catch(error => {
-              // Handle the error if the AJAX request failed
-              console.log('ajax request failed!');
-          });
-    }
-  })
-  
+function hide_comment(){
+  var element  =  document.getElementById('comment-container');
+  element.classList.remove('show');
 }
- */
+
+function m_hide_comment(){
+  var element  =  document.getElementById('m-comment-container');
+  element.classList.remove('show');
+}
 
 
-/*
 
-// Get the formset container and add row button
-const formsetContainer = document.getElementById('formset-container');
-const addRowBtn = document.getElementById('add-formset-row-btn');
+var slideIndex = 1;
+showDivs(slideIndex);
 
-// Add event listener to add row button
-addRowBtn.addEventListener('click', function() {
-  // Get the number of forms in the formset
-  const totalForms = document.getElementById('id_form-TOTAL_FORMS').value;
+function plusDivs(n) {
+showDivs(slideIndex += n);
+}
 
-  // Create a new formset row with a unique prefix
-  const newFormHtml = `
-    <div class="box-a formset-form">
-      <div class="card1">
-          <input type="hidden" name="form-${totalForms}-id" id="id_form-${totalForms}-id">
-          <input type="hidden" name="form-0-user" value="{{deceased.user.id}}">
-          <input type="hidden" name="form-0-deceased" value="{{deceased.id}}">
-          {{ formset.empty_form.as_p }}
-      </div>
-      <div class="card2 remove-formset-row-btn"><i class="fa-solid fa-gear"></i></div>
-    </div>
-  `;
+function currentDiv(n) {
+showDivs(slideIndex = n);
+}
 
-  // Append the new formset row to the formset container
-  formsetContainer.insertAdjacentHTML('beforeend', newFormHtml);
+function showDivs(n) {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  if (n > x.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = x.length}
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
+    
+  }
 
-  // Update the TOTAL_FORMS value
-  document.getElementById('id_form-TOTAL_FORMS').value = parseInt(totalForms) + 1;
+  x[slideIndex-1].style.display = "block";
+  if(x[slideIndex-1].style.display == "block"){
+    if(slideIndex>1 && slideIndex<x.length){
+      var photoId = x[slideIndex-1].querySelector('input').value;
+      var element  =  document.getElementById('comment-container');
+      //element.classList.add('show');
+      if(element.classList.contains('show')){
+        const url = `/photos/${photoId}/comments/`;
+  
+       
 
-  // Add event listener to new remove button
-  const removeBtns = document.getElementsByClassName('remove-formset-row-btn');
-  const lastIndex = removeBtns.length - 1;
-  removeBtns[lastIndex].addEventListener('click', function() {
-    this.parentNode.remove();
 
-    // Update the TOTAL_FORMS value
-    document.getElementById('id_form-TOTAL_FORMS').value = parseInt(totalForms) - 1;
+          fetch(url)
+          .then(response => response.json())
+          .then(comments_data => {
+            const container = document.querySelector('.comment-box');
+            container.innerHTML = '';
+    
+            comments_data.forEach(comment => {
+              const comment_card = document.createElement('div');
+              const card1 = document.createElement('div');
+              card1.classList.add('card1');
+              const box1 = document.createElement('div');
+              const box2 = document.createElement('div');
+              box1.classList.add('box1');
+              box2.classList.add('box2');
+              box2.setAttribute('data-comment-id',`${comment.comment_id}`);
+              //box2.classList.add('elipsis');
+
+              if(comment.comment_by == comment.login_user){
+                box2.classList.add('elipsis');
+              }
+              else{
+                box2.classList.add('elipsis-X');
+                
+              }
+              const ellipsis = document.createElement('i');
+              ellipsis.classList.add('fa-solid');
+              ellipsis.classList.add('fa-ellipsis');
+              const initials = document.createElement('div');
+              initials.classList.add('icon');
+              initials.innerHTML =  `${comment.first_name[0]} ${comment.last_name[0]}`;
+              const user_box = document.createElement('div');
+              user_box.classList.add('user-box');
+              const user_name = document.createElement('div');
+              user_name.classList.add('name');
+              user_name.innerHTML = `${comment.first_name} ${comment.last_name}`;
+              const time = document.createElement('time');
+              time.classList.add('time');
+    
+              const dateString = `${comment.date}`;
+              const dateObject = new Date(dateString);
+              const formattedDate = dateObject.toLocaleString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric', 
+                hour: 'numeric', 
+                minute: 'numeric', 
+                second: 'numeric', 
+                hour12: true 
+              });
+              time.innerHTML = `${formattedDate}`;
+              //append
+              box2.appendChild(ellipsis);
+              user_box.appendChild(user_name);
+              user_box.appendChild(time);
+              box1.appendChild(initials);
+              box1.appendChild(user_box);
+              card1.appendChild(box1);
+              card1.appendChild(box2);
+    
+    
+    
+              const card2 = document.createElement('div');
+              card2.classList.add('card2');
+              const text = document.createElement('div');
+              text.classList.add('text');
+              text.textContent= `${comment.text}`;
+              card2.appendChild(text);
+    
+    
+              const card3 = document.createElement('div');
+              card3.classList.add('delete-card');
+              const icon = document.createElement('div');
+              icon.classList.add('icon');
+              card3.setAttribute('id',`icon${comment.comment_id}`);
+              card3.setAttribute('data-delete-id',`${comment.comment_id}`);
+              const fa_trash = document.createElement('i');
+              fa_trash.classList.add('fa-solid');
+              fa_trash.classList.add('fa-trash');
+              const del_text = document.createElement('div');
+              del_text.classList.add('text');
+              if(comment.comment_by == comment.login_user){
+                del_text.innerHTML = 'Delete';
+              }
+              else{
+                del_text.innerHTML = "can't delete"
+              }
+              //del_text.innerHTML = 'Delete';
+              //append
+              icon.appendChild(fa_trash);
+              card3.appendChild(icon);
+              card3.appendChild(del_text);
+    
+              //append event to delete icon
+    
+             
+              
+              
+              //end append
+    
+              
+    
+              
+              
+              comment_card.appendChild(card1);
+              comment_card.appendChild(card2);
+              comment_card.appendChild(card3);
+              comment_card.classList.add('comment-card');
+    
+              container.appendChild(comment_card);
+            });
+                          
+            const deleteBtns = document.querySelectorAll('.elipsis');
+            //let delete_box = document.getElementById(`icon${comment.comment_id}`);
+            deleteBtns.forEach(btn => {
+              //console.log('hhr',btn);
+             btn.addEventListener('click', () => {
+                const commentId = btn.getAttribute('data-comment-id');
+                let parent_card = btn.closest('.comment-card').querySelector('.delete-card');
+                parent_card.style.display = 'flex';
+                if(parent_card.style.display == 'flex'){
+                  document.getElementById('comment-modal').style.display = 'block';
+                  document.getElementById('comment-modal').addEventListener('click',()=>{
+                    parent_card.style.display='none';
+                    document.getElementById('comment-modal').style.display = 'none';
+                  });
+    
+                  //add event to delete btn
+                  const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                  parent_card.addEventListener('click',()=>{
+                    fetch(`/delete-comment/${commentId}/`, {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken,
+                      },
+                    })
+                      .then(response => {
+                        if (response.ok) {
+                          // Remove the comment element from the DOM
+                          //const commentEl = btn.closest('.comment');
+                          
+                          //commentEl.remove();
+                          btn.closest('.comment-card').remove();
+                          document.getElementById('comment-modal').style.display = 'none';
+                          
+                        } else {
+                          throw new Error('Failed to delete comment.');
+                        }
+                      })
+                      .catch(error => console.error(error));  
+                  });
+                   
+                }
+              
+               
+    
+               
+              }); 
+            });
+
+            const deleteBtns_X = document.querySelectorAll('.elipsis-X');
+            //let delete_box = document.getElementById(`icon${comment.comment_id}`);
+            deleteBtns_X.forEach(btn => {
+              //console.log('hhr',btn);
+            btn.addEventListener('click', () => {
+                const commentId = btn.getAttribute('data-comment-id');
+                let parent_card = btn.closest('.comment-card').querySelector('.delete-card');
+                
+              parent_card.style.display = 'flex';
+                if(parent_card.style.display == 'flex'){
+                  document.getElementById('comment-modal').style.display = 'block';
+                  document.getElementById('comment-modal').addEventListener('click',()=>{
+                    parent_card.style.display='none';
+                    document.getElementById('comment-modal').style.display = 'none';
+                  });
+                }
+            });
+  
+          });
+    
+          });
+      }
+      const like_url = `/like-list/${photoId}/`;
+      fetch(like_url)
+      .then(response => response.json())
+      .then(data => {
+        var likeCount = x[slideIndex-1].querySelector('.num');
+        var btn = x[slideIndex-1].querySelector('.like-btn');
+       
+        if (data.liked) {
+          
+          btn.classList.add('liked');
+          //likeCount.textContent = data.count + ' likes';
+          likeCount.textContent = data.count ;
+        } else {
+          btn.classList.remove('liked');
+          likeCount.textContent = data.count ;
+        }
+      });
+    }
+    else{
+      var photoId = x[slideIndex-1].querySelector('input').value;
+      const like_url = `/cover-like-list/${photoId}/`;
+      fetch(like_url)
+      .then(response => response.json())
+      .then(data => {
+        var likeCount = x[slideIndex-1].querySelector('.num');
+        var btn = x[slideIndex-1].querySelector('.like-cover');
+       
+        if (data.liked) {
+          
+          btn.classList.add('liked');
+          //likeCount.textContent = data.count + ' likes';
+          likeCount.textContent = data.count ;
+        } else {
+          btn.classList.remove('liked');
+          likeCount.textContent = data.count ;
+        }
+      });
+    }
+  }  
+}
+
+
+
+
+
+
+const commentForm = document.querySelector('#comment-container');
+
+commentForm.addEventListener('submit', function(event) {
+  event.preventDefault(); // Prevent default form submission behavior
+  
+  let photoId;
+  var x = document.getElementsByClassName("mySlides");
+  for (i = 0; i < x.length; i++) {
+    if(x[i].style.display == "block"){
+      photoId = x[i].querySelector('input').value; 
+      //console.log(x[i].querySelector('input'));
+    }
+  }
+  //const photoId = document.querySelector('input[name="photo_id"]').value; // Get the photo ID from a hidden input field
+  const commentContent = document.querySelector('textarea[name="comment_content"]').value; // Get the comment content from the textarea
+
+  const xhr = new XMLHttpRequest(); // Create a new XMLHttpRequest object
+  xhr.open('POST', `/add-comment/${photoId}/`); // Set up the request
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // Set the request header
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  xhr.setRequestHeader('X-CSRFToken', csrftoken);
+
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      setTimeout(function() {
+        document.querySelector('textarea[name="comment_content"]').value = '';
+        const url = `/photos/${photoId}/comments/`;
+
+        fetch(url)
+          .then(response => response.json())
+          .then(comments_data => {
+            const container = document.querySelector('.comment-box');
+            container.innerHTML = '';
+    
+            comments_data.forEach(comment => {
+              const comment_card = document.createElement('div');
+              const card1 = document.createElement('div');
+              card1.classList.add('card1');
+              const box1 = document.createElement('div');
+              const box2 = document.createElement('div');
+              box1.classList.add('box1');
+              box2.classList.add('box2');
+              box2.setAttribute('data-comment-id',`${comment.comment_id}`);
+              //box2.classList.add('elipsis');
+
+              if(comment.comment_by == comment.login_user){
+                box2.classList.add('elipsis');
+              }
+              else{
+                box2.classList.add('elipsis-X');
+                
+              }
+              const ellipsis = document.createElement('i');
+              ellipsis.classList.add('fa-solid');
+              ellipsis.classList.add('fa-ellipsis');
+              const initials = document.createElement('div');
+              initials.classList.add('icon');
+              initials.innerHTML =  `${comment.first_name[0]} ${comment.last_name[0]}`;
+              const user_box = document.createElement('div');
+              user_box.classList.add('user-box');
+              const user_name = document.createElement('div');
+              user_name.classList.add('name');
+              user_name.innerHTML = `${comment.first_name} ${comment.last_name}`;
+              const time = document.createElement('time');
+              time.classList.add('time');
+    
+              const dateString = `${comment.date}`;
+              const dateObject = new Date(dateString);
+              const formattedDate = dateObject.toLocaleString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric', 
+                hour: 'numeric', 
+                minute: 'numeric', 
+                second: 'numeric', 
+                hour12: true 
+              });
+              time.innerHTML = `${formattedDate}`;
+              //append
+              box2.appendChild(ellipsis);
+              user_box.appendChild(user_name);
+              user_box.appendChild(time);
+              box1.appendChild(initials);
+              box1.appendChild(user_box);
+              card1.appendChild(box1);
+              card1.appendChild(box2);
+    
+    
+    
+              const card2 = document.createElement('div');
+              card2.classList.add('card2');
+              const text = document.createElement('div');
+              text.classList.add('text');
+              text.textContent= `${comment.text}`;
+              card2.appendChild(text);
+    
+    
+              const card3 = document.createElement('div');
+              card3.classList.add('delete-card');
+              const icon = document.createElement('div');
+              icon.classList.add('icon');
+              card3.setAttribute('id',`icon${comment.comment_id}`);
+              card3.setAttribute('data-delete-id',`${comment.comment_id}`);
+              const fa_trash = document.createElement('i');
+              fa_trash.classList.add('fa-solid');
+              fa_trash.classList.add('fa-trash');
+              const del_text = document.createElement('div');
+              del_text.classList.add('text');
+              if(comment.comment_by == comment.login_user){
+                del_text.innerHTML = 'Delete';
+              }
+              else{
+                del_text.innerHTML = "can't delete"
+              }
+              //del_text.innerHTML = 'Delete';
+              //append
+              icon.appendChild(fa_trash);
+              card3.appendChild(icon);
+              card3.appendChild(del_text);
+    
+              //append event to delete icon
+    
+             
+              
+              
+              //end append
+    
+              
+    
+              
+              
+              comment_card.appendChild(card1);
+              comment_card.appendChild(card2);
+              comment_card.appendChild(card3);
+              comment_card.classList.add('comment-card');
+    
+              container.appendChild(comment_card);
+            });
+                          
+            const deleteBtns = document.querySelectorAll('.elipsis');
+            //let delete_box = document.getElementById(`icon${comment.comment_id}`);
+            deleteBtns.forEach(btn => {
+              //console.log('hhr',btn);
+             btn.addEventListener('click', () => {
+                const commentId = btn.getAttribute('data-comment-id');
+                let parent_card = btn.closest('.comment-card').querySelector('.delete-card');
+                parent_card.style.display = 'flex';
+                if(parent_card.style.display == 'flex'){
+                  document.getElementById('comment-modal').style.display = 'block';
+                  document.getElementById('comment-modal').addEventListener('click',()=>{
+                    parent_card.style.display='none';
+                    document.getElementById('comment-modal').style.display = 'none';
+                  });
+    
+                  //add event to delete btn
+                  const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                  parent_card.addEventListener('click',()=>{
+                    fetch(`/delete-comment/${commentId}/`, {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken,
+                      },
+                    })
+                      .then(response => {
+                        if (response.ok) {
+                          // Remove the comment element from the DOM
+                          //const commentEl = btn.closest('.comment');
+                          
+                          //commentEl.remove();
+                          btn.closest('.comment-card').remove();
+                          document.getElementById('comment-modal').style.display = 'none';
+                          
+                        } else {
+                          throw new Error('Failed to delete comment.');
+                        }
+                      })
+                      .catch(error => console.error(error));  
+                  });
+                   
+                }
+              
+               
+    
+               
+              }); 
+            });
+
+            const deleteBtns_X = document.querySelectorAll('.elipsis-X');
+            //let delete_box = document.getElementById(`icon${comment.comment_id}`);
+            deleteBtns_X.forEach(btn => {
+              //console.log('hhr',btn);
+            btn.addEventListener('click', () => {
+                const commentId = btn.getAttribute('data-comment-id');
+                let parent_card = btn.closest('.comment-card').querySelector('.delete-card');
+                
+              parent_card.style.display = 'flex';
+                if(parent_card.style.display == 'flex'){
+                  document.getElementById('comment-modal').style.display = 'block';
+                  document.getElementById('comment-modal').addEventListener('click',()=>{
+                    parent_card.style.display='none';
+                    document.getElementById('comment-modal').style.display = 'none';
+                  });
+                }
+            });
+  
+          });
+    
+          });
+        }, 1000);
+      // Request was successful
+      // Update the page with the new comment
+      //const commentList = document.querySelector(`#photo-${photoId} .comment-list`);
+      //const newComment = document.createElement('li');
+      //newComment.textContent = commentContent;
+      //commentList.appendChild(newComment);
+     
+    } else {
+      // Request failed
+      console.error(`Server returned status ${xhr.status}`);
+    }
+  };
+
+  xhr.onerror = function() {
+    console.error('Request failed');
+  };
+
+  xhr.send(`comment_content=${encodeURIComponent(commentContent)}`); // Send the request with the comment content in the request body
+});
+
+
+
+
+
+
+document.querySelectorAll('.fetch-comments-btn').forEach(button => {
+  button.addEventListener('click', event => {
+    var element  =  document.getElementById('comment-container');
+    element.classList.add('show');
+    const photoId = event.target.getAttribute('data-photo-id');
+    const url = `/photos/${photoId}/comments/`;
+
+
+
+    fetch(url)
+      .then(response => response.json())
+      .then(comments_data => {
+        const container = document.querySelector('.comment-box');
+        container.innerHTML = '';
+
+        comments_data.forEach(comment => {
+          const comment_card = document.createElement('div');
+          const card1 = document.createElement('div');
+          card1.classList.add('card1');
+          const box1 = document.createElement('div');
+          const box2 = document.createElement('div');
+          box1.classList.add('box1');
+          box2.classList.add('box2');
+          box2.setAttribute('data-comment-id',`${comment.comment_id}`);
+          box2.classList.add('elipsis');
+          const ellipsis = document.createElement('i');
+          ellipsis.classList.add('fa-solid');
+          ellipsis.classList.add('fa-ellipsis');
+          const initials = document.createElement('div');
+          initials.classList.add('icon');
+          initials.innerHTML =  `${comment.first_name[0]} ${comment.last_name[0]}`;
+          const user_box = document.createElement('div');
+          user_box.classList.add('user-box');
+          const user_name = document.createElement('div');
+          user_name.classList.add('name');
+          user_name.innerHTML = `${comment.first_name} ${comment.last_name}`;
+          const time = document.createElement('time');
+          time.classList.add('time');
+
+          const dateString = `${comment.date}`;
+          const dateObject = new Date(dateString);
+          const formattedDate = dateObject.toLocaleString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric', 
+            hour: 'numeric', 
+            minute: 'numeric', 
+            second: 'numeric', 
+            hour12: true 
+          });
+          time.innerHTML = `${formattedDate}`;
+          //append
+          box2.appendChild(ellipsis);
+          user_box.appendChild(user_name);
+          user_box.appendChild(time);
+          box1.appendChild(initials);
+          box1.appendChild(user_box);
+          card1.appendChild(box1);
+          card1.appendChild(box2);
+
+
+
+          const card2 = document.createElement('div');
+          card2.classList.add('card2');
+          const text = document.createElement('div');
+          text.classList.add('text');
+          text.textContent= `${comment.text}`;
+          card2.appendChild(text);
+
+
+          const card3 = document.createElement('div');
+          card3.classList.add('delete-card');
+          const icon = document.createElement('div');
+          icon.classList.add('icon');
+          card3.setAttribute('id',`icon${comment.comment_id}`);
+          card3.setAttribute('data-delete-id',`${comment.comment_id}`);
+          const fa_trash = document.createElement('i');
+          fa_trash.classList.add('fa-solid');
+          fa_trash.classList.add('fa-trash');
+          const del_text = document.createElement('div');
+          del_text.classList.add('text');
+          del_text.innerHTML = 'Delete';
+          //append
+          icon.appendChild(fa_trash);
+          card3.appendChild(icon);
+          card3.appendChild(del_text);
+
+          //append event to delete icon
+
+         
+          
+          
+          //end append
+
+          
+
+          
+          
+          comment_card.appendChild(card1);
+          comment_card.appendChild(card2);
+          comment_card.appendChild(card3);
+          comment_card.classList.add('comment-card');
+
+          container.appendChild(comment_card);
+        });
+                      
+        const deleteBtns = document.querySelectorAll('.elipsis');
+        //let delete_box = document.getElementById(`icon${comment.comment_id}`);
+        deleteBtns.forEach(btn => {
+          //console.log('hhr',btn);
+         btn.addEventListener('click', () => {
+            const commentId = btn.getAttribute('data-comment-id');
+            let parent_card = btn.closest('.comment-card').querySelector('.delete-card');
+            parent_card.style.display = 'flex';
+            if(parent_card.style.display == 'flex'){
+              document.getElementById('comment-modal').style.display = 'block';
+              document.getElementById('comment-modal').addEventListener('click',()=>{
+                parent_card.style.display='none';
+                document.getElementById('comment-modal').style.display = 'none';
+              });
+
+              //add event to delete btn
+              const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+              parent_card.addEventListener('click',()=>{
+                fetch(`/delete-comment/${commentId}/`, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                  },
+                })
+                  .then(response => {
+                    if (response.ok) {
+                      // Remove the comment element from the DOM
+                      //const commentEl = btn.closest('.comment');
+                      
+                      //commentEl.remove();
+                      btn.closest('.comment-card').remove();
+                      document.getElementById('comment-modal').style.display = 'none';
+                      
+                    } else {
+                      throw new Error('Failed to delete comment.');
+                    }
+                  })
+                  .catch(error => console.error(error));  
+              });
+               
+            }
+          
+           
+
+           
+          }); 
+        });
+
+      });
   });
 });
 
-// Add event listener to existing remove buttons
-const removeBtns = document.getElementsByClassName('remove-formset-row-btn');
-for (let i = 0; i < removeBtns.length; i++) {
-  removeBtns[i].addEventListener('click', function() {
-    this.parentNode.remove();
 
-    // Get the number of forms in the formset
-    const totalForms = document.getElementById('id_form-TOTAL_FORMS').value;
 
-    // Update the TOTAL_FORMS value
-    document.getElementById('id_form-TOTAL_FORMS').value = parseInt(totalForms) - 1;
+
+
+
+
+
+
+const inviteForm = document.querySelector('#invite-form');
+
+inviteForm.addEventListener('submit', function(event) {
+
+  event.preventDefault(); // Prevent default form submission behavior
+  //const photoId = document.querySelector('input[name="photo_id"]').value; // Get the photo ID from a hidden input field
+  //const commentContent = document.querySelector('textarea[name="comment_content"]').value; // Get the comment content from the textarea
+  //const formData = new FormData(inviteForm);
+
+  const xhr = new XMLHttpRequest(); // Create a new XMLHttpRequest object
+  xhr.open('POST', '/invite-contributor/'); // Set up the request
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // Set the request header
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  xhr.setRequestHeader('X-CSRFToken', csrftoken);
+
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+        console.log('success')
+        setTimeout(function() {
+          location.reload();
+      }, 500);
+      // Request was successful
+      // Update the page with the new comment
+      //const commentList = document.querySelector(`#photo-${photoId} .comment-list`);
+      //const newComment = document.createElement('li');
+      //newComment.textContent = commentContent;
+      //commentList.appendChild(newComment);
+     
+    } else {
+      // Request failed
+      console.error(`Server returned status ${xhr.status}`);
+    }
+  };
+
+  xhr.onerror = function() {
+    console.error('Request failed');
+  };
+  console.log(inviteForm.memorials.value)
+  //var data = encodeURI('email=' + form.email.value + '&name=' + form.name.value + '&message=' + form.message.value);
+  var data = encodeURI('email=' + inviteForm.email.value  + '&name=' + inviteForm.name.value  + '&memorials=' + inviteForm.memorials.value);
+  xhr.send(data); // Send the request with the comment content in the request body
+});
+
+
+
+
+
+
+
+document.querySelectorAll('.like-btn').forEach(button => {
+  button.addEventListener('click',  ()=> {
+   
+    const photoId = button.getAttribute('data-photo-id');
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+    //const url = `/photos/${photoId}/comments/`;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', `/like-photo/${photoId}/`);
+    xhr.setRequestHeader('X-CSRFToken', csrftoken);
+    xhr.onload = function() {
+      var data = JSON.parse(xhr.responseText);
+      //var likeBtn = document.getElementById('like-btn');
+      var likeCount = button.querySelector('.num');
+      if (data.liked) {
+        
+        button.classList.add('liked');
+        //likeCount.textContent = data.count + ' likes';
+        likeCount.textContent = data.count ;
+      } else {
+        button.classList.remove('liked');
+        likeCount.textContent = data.count ;
+      }
+    };
+    xhr.send();
   });
+});
+
+
+
+
+document.querySelectorAll('.like-cover').forEach(button => {
+  button.addEventListener('click',  ()=> {
+   
+    const photoId = button.getAttribute('data-photo-id');
+
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+    //const url = `/photos/${photoId}/comments/`;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', `/like-cover/${photoId}/`);
+    xhr.setRequestHeader('X-CSRFToken', csrftoken);
+    xhr.onload = function() {
+      var data = JSON.parse(xhr.responseText);
+      //var likeBtn = document.getElementById('like-btn');
+      var likeCount = button.querySelector('.num');
+      if (data.liked) {
+        
+        button.classList.add('liked');
+        //likeCount.textContent = data.count + ' likes';
+        likeCount.textContent = data.count ;
+      } else {
+        button.classList.remove('liked');
+        likeCount.textContent = data.count ;
+      }
+    };
+    xhr.send();
+  });
+});
+
+
+
+
+
+
+
+var m_slideIndex = 1;
+m_showDivs(m_slideIndex);
+
+function m_plusDivs(n) {
+m_showDivs(m_slideIndex += n);
 }
 
- */
+function m_currentDiv(n) {
+m_showDivs(m_slideIndex = n);
+}
 
-/*
-// add formset on click
-document.getElementById('add-formset-btn').addEventListener('click', function(e) {
-    e.preventDefault();
-    // get formset template and count of existing formsets
-    const template = document.getElementById('formset-template');
-    const formsetCount = document.querySelectorAll('.formset-container').length;
-    // replace '__prefix__' placeholder in template with formset count
-    const html = template.innerHTML.replace(/__prefix__/g, formsetCount);
-    // create new formset and append to container
-    const div = document.createElement('div');
-    div.classList.add('formset-container');
-    div.innerHTML = html;
-    document.getElementById('formset-container').appendChild(div);
+function m_showDivs(n) {
+  var i;
+  var x = document.getElementsByClassName("m-slides");
+  if (n > x.length) {m_slideIndex = 1}
+  if (n < 1) {m_slideIndex = x.length}
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
     
-    // add remove-form-btn event listener to new formset
-    const removeBtn = div.querySelector('.remove-form-btn');
-    removeBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      const formsetContainer = this.closest('.formset-container');
-      const formsetCount = document.querySelectorAll('.formset-container').length;
-      // only allow formset to be removed if there is more than one formset
-      if (formsetCount > 1) {
-        formsetContainer.parentNode.removeChild(formsetContainer);
-        // update formset indices
-        updateIndices();
-      }
+  }
+  x[m_slideIndex-1].style.display = "block";
+
+  if(x[m_slideIndex-1].style.display == "block"){
+    if(m_slideIndex>1 && m_slideIndex < x.length){
+      var photoId = x[m_slideIndex-1].querySelector('input').value;
+      const like_url = `/like-list/${photoId}/`;
+      fetch(like_url)
+      .then(response => response.json())
+      .then(data => {
+        var likeCount = x[m_slideIndex-1].querySelector('.num');
+        var btn = x[m_slideIndex-1].querySelector('.like-btn');
+       
+        if (data.liked) {
+          
+          btn.classList.add('liked');
+          //likeCount.textContent = data.count + ' likes';
+          likeCount.textContent = data.count ;
+        } else {
+          btn.classList.remove('liked');
+          likeCount.textContent = data.count ;
+        }
+      });
+    }
+    else{
+      var photoId = x[m_slideIndex-1].querySelector('input').value;
+      const like_url = `/cover-like-list/${photoId}/`;
+      fetch(like_url)
+      .then(response => response.json())
+      .then(data => {
+        var likeCount = x[m_slideIndex-1].querySelector('.num');
+        var btn = x[m_slideIndex-1].querySelector('.like-cover');
+       
+        if (data.liked) {
+          
+          btn.classList.add('liked');
+          //likeCount.textContent = data.count + ' likes';
+          likeCount.textContent = data.count ;
+        } else {
+          btn.classList.remove('liked');
+          likeCount.textContent = data.count ;
+        }
+      });
+    }
+  } 
+}
+
+
+
+
+//submit mobile comments
+
+const m_commentForm = document.querySelector('#m-comment-container');
+
+m_commentForm.addEventListener('submit', function(event) {
+  event.preventDefault(); // Prevent default form submission behavior
+  
+  let photoId;
+  var x = document.getElementsByClassName("m-slides");
+  for (i = 0; i < x.length; i++) {
+    if(x[i].style.display == "block"){
+      photoId = x[i].querySelector('input').value; 
+      //console.log(x[i].querySelector('input'));
+    }
+  }
+  //const photoId = document.querySelector('input[name="photo_id"]').value; // Get the photo ID from a hidden input field
+  const commentContent = document.querySelector('textarea[name="m_comment_content"]').value; // Get the comment content from the textarea
+  const xhr = new XMLHttpRequest(); // Create a new XMLHttpRequest object
+  xhr.open('POST', `/add-comment/${photoId}/`); // Set up the request
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // Set the request header
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  xhr.setRequestHeader('X-CSRFToken', csrftoken);
+
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      setTimeout(function() {
+        document.querySelector('textarea[name="m_comment_content"]').value = '';
+        const url = `/photos/${photoId}/comments/`;
+        fetch(url)
+        .then(response => response.json())
+        .then(comments_data => {
+          
+            const container = document.querySelector('.m-comment-box');
+            container.innerHTML = '';
+            console.log('nn',comments_data)
+            comments_data.forEach(comment => {
+              const comment_card = document.createElement('div');
+              const card1 = document.createElement('div');
+              card1.classList.add('card1');
+              const box1 = document.createElement('div');
+              const box2 = document.createElement('div');
+              box1.classList.add('box1');
+              box2.classList.add('box2');
+              box2.setAttribute('data-comment-id',`${comment.comment_id}`);
+            
+              if(comment.comment_by == comment.login_user){
+                box2.classList.add('elipsis');
+              }
+              else{
+                box2.classList.add('elipsis-X');
+              }
+            
+              const ellipsis = document.createElement('i');
+              ellipsis.classList.add('fa-solid');
+              ellipsis.classList.add('fa-ellipsis');
+  
+              const initials = document.createElement('div');
+              initials.classList.add('icon');
+              initials.innerHTML =  `${comment.first_name[0]} ${comment.last_name[0]}`;
+              const user_box = document.createElement('div');
+              user_box.classList.add('user-box');
+              const user_name = document.createElement('div');
+              user_name.classList.add('name');
+              user_name.innerHTML = `${comment.first_name} ${comment.last_name}`;
+              const time = document.createElement('time');
+              time.classList.add('time');
+  
+              const dateString = `${comment.date}`;
+              const dateObject = new Date(dateString);
+              const formattedDate = dateObject.toLocaleString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric', 
+                hour: 'numeric', 
+                minute: 'numeric', 
+                second: 'numeric', 
+                hour12: true 
+              });
+              time.innerHTML = `${formattedDate}`;
+              //append
+              box2.appendChild(ellipsis);
+              user_box.appendChild(user_name);
+              user_box.appendChild(time);
+              box1.appendChild(initials);
+              box1.appendChild(user_box);
+              card1.appendChild(box1);
+              card1.appendChild(box2);
+  
+  
+  
+              const card2 = document.createElement('div');
+              card2.classList.add('card2');
+              const text = document.createElement('div');
+              text.classList.add('text');
+              text.textContent= `${comment.text}`;
+              card2.appendChild(text);
+  
+  
+              const card3 = document.createElement('div');
+              card3.classList.add('delete-card');
+              const icon = document.createElement('div');
+              icon.classList.add('icon');
+              card3.setAttribute('id',`icon${comment.comment_id}`);
+              card3.setAttribute('data-delete-id',`${comment.comment_id}`);
+              const fa_trash = document.createElement('i');
+              fa_trash.classList.add('fa-solid');
+              fa_trash.classList.add('fa-trash');
+              const del_text = document.createElement('div');
+              del_text.classList.add('text');
+              
+              if(comment.comment_by == comment.login_user){
+                del_text.innerHTML = 'Delete';
+              }
+              else{
+                del_text.innerHTML = "can't delete"
+              }
+  
+              //append
+              icon.appendChild(fa_trash);
+              card3.appendChild(icon);
+              card3.appendChild(del_text);
+  
+              //append event to delete icon
+  
+            
+              
+              
+              //end append
+  
+              
+  
+              
+              
+              comment_card.appendChild(card1);
+              comment_card.appendChild(card2);
+              comment_card.appendChild(card3);
+              comment_card.classList.add('comment-card');
+  
+              container.appendChild(comment_card);
+            });
+                          
+            const deleteBtns = document.querySelectorAll('.elipsis');
+            //let delete_box = document.getElementById(`icon${comment.comment_id}`);
+            deleteBtns.forEach(btn => {
+              //console.log('hhr',btn);
+            btn.addEventListener('click', () => {
+                const commentId = btn.getAttribute('data-comment-id');
+                let parent_card = btn.closest('.comment-card').querySelector('.delete-card');
+                
+              parent_card.style.display = 'flex';
+                if(parent_card.style.display == 'flex'){
+                  document.getElementById('m-comment-modal').style.display = 'block';
+                  document.getElementById('m-comment-modal').addEventListener('click',()=>{
+                    parent_card.style.display='none';
+                    document.getElementById('m-comment-modal').style.display = 'none';
+                  });
+                  
+                
+                  //add event to delete btn
+                  const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                  parent_card.addEventListener('click',()=>{
+                    fetch(`/delete-comment/${commentId}/`, {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken,
+                      },
+                    })
+                      .then(response => {
+                        if (response.ok) {
+                          // Remove the comment element from the DOM
+                          //const commentEl = btn.closest('.comment');
+                          
+                          //commentEl.remove();
+                          btn.closest('.comment-card').remove();
+                          document.getElementById('m-comment-modal').style.display = 'none';
+                          
+                        } else {
+                          throw new Error('Failed to delete comment.');
+                        }
+                      })
+                      .catch(error => console.error(error));  
+                  });
+                  
+                }
+              
+              
+  
+              
+              }); 
+            });
+            const deleteBtns_X = document.querySelectorAll('.elipsis-X');
+            //let delete_box = document.getElementById(`icon${comment.comment_id}`);
+            deleteBtns_X.forEach(btn => {
+              //console.log('hhr',btn);
+            btn.addEventListener('click', () => {
+                const commentId = btn.getAttribute('data-comment-id');
+                let parent_card = btn.closest('.comment-card').querySelector('.delete-card');
+                
+              parent_card.style.display = 'flex';
+                if(parent_card.style.display == 'flex'){
+                  document.getElementById('m-comment-modal').style.display = 'block';
+                  document.getElementById('m-comment-modal').addEventListener('click',()=>{
+                    parent_card.style.display='none';
+                    document.getElementById('m-comment-modal').style.display = 'none';
+                  });
+                }
+            });
+  
+          });
+  
+          
+      });
+      }, 1000);
+
+
+      // Request was successful
+      // Update the page with the new comment
+      //const commentList = document.querySelector(`#photo-${photoId} .comment-list`);
+      //const newComment = document.createElement('li');
+      //newComment.textContent = commentContent;
+      //commentList.appendChild(newComment);
+     
+    } else {
+      // Request failed
+      console.error(`Server returned status ${xhr.status}`);
+    }
+  };
+
+  xhr.onerror = function() {
+    console.error('Request failed');
+  };
+
+  xhr.send(`comment_content=${encodeURIComponent(commentContent)}`); // Send the request with the comment content in the request body 
+});
+
+
+
+
+
+//list mobile comments
+
+
+document.querySelectorAll('.m-fetch-comments-btn').forEach(button => {
+  button.addEventListener('click', event => {
+    var element  =  document.getElementById('m-comment-container');
+    element.classList.add('show');
+    const photoId = event.target.getAttribute('data-photo-id');
+    const url = `/photos/${photoId}/comments/`;
+    //console.log(event.target);
+    //console.log(photoId)
+  
+    fetch(url)
+      .then(response => response.json())
+      .then(comments_data => {
+        
+          const container = document.querySelector('.m-comment-box');
+          container.innerHTML = '';
+          console.log('nn',comments_data)
+          comments_data.forEach(comment => {
+            const comment_card = document.createElement('div');
+            const card1 = document.createElement('div');
+            card1.classList.add('card1');
+            const box1 = document.createElement('div');
+            const box2 = document.createElement('div');
+            box1.classList.add('box1');
+            box2.classList.add('box2');
+            box2.setAttribute('data-comment-id',`${comment.comment_id}`);
+          
+            if(comment.comment_by == comment.login_user){
+              box2.classList.add('elipsis');
+            }
+            else{
+              box2.classList.add('elipsis-X');
+            }
+          
+            const ellipsis = document.createElement('i');
+            ellipsis.classList.add('fa-solid');
+            ellipsis.classList.add('fa-ellipsis');
+
+            const initials = document.createElement('div');
+            initials.classList.add('icon');
+            initials.innerHTML =  `${comment.first_name[0]} ${comment.last_name[0]}`;
+            const user_box = document.createElement('div');
+            user_box.classList.add('user-box');
+            const user_name = document.createElement('div');
+            user_name.classList.add('name');
+            user_name.innerHTML = `${comment.first_name} ${comment.last_name}`;
+            const time = document.createElement('time');
+            time.classList.add('time');
+
+            const dateString = `${comment.date}`;
+            const dateObject = new Date(dateString);
+            const formattedDate = dateObject.toLocaleString('en-US', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric', 
+              hour: 'numeric', 
+              minute: 'numeric', 
+              second: 'numeric', 
+              hour12: true 
+            });
+            time.innerHTML = `${formattedDate}`;
+            //append
+            box2.appendChild(ellipsis);
+            user_box.appendChild(user_name);
+            user_box.appendChild(time);
+            box1.appendChild(initials);
+            box1.appendChild(user_box);
+            card1.appendChild(box1);
+            card1.appendChild(box2);
+
+
+
+            const card2 = document.createElement('div');
+            card2.classList.add('card2');
+            const text = document.createElement('div');
+            text.classList.add('text');
+            text.textContent= `${comment.text}`;
+            card2.appendChild(text);
+
+
+            const card3 = document.createElement('div');
+            card3.classList.add('delete-card');
+            const icon = document.createElement('div');
+            icon.classList.add('icon');
+            card3.setAttribute('id',`icon${comment.comment_id}`);
+            card3.setAttribute('data-delete-id',`${comment.comment_id}`);
+            const fa_trash = document.createElement('i');
+            fa_trash.classList.add('fa-solid');
+            fa_trash.classList.add('fa-trash');
+            const del_text = document.createElement('div');
+            del_text.classList.add('text');
+            
+            if(comment.comment_by == comment.login_user){
+              del_text.innerHTML = 'Delete';
+            }
+            else{
+              del_text.innerHTML = "can't delete"
+            }
+
+            //append
+            icon.appendChild(fa_trash);
+            card3.appendChild(icon);
+            card3.appendChild(del_text);
+
+            //append event to delete icon
+
+          
+            
+            
+            //end append
+
+            
+
+            
+            
+            comment_card.appendChild(card1);
+            comment_card.appendChild(card2);
+            comment_card.appendChild(card3);
+            comment_card.classList.add('comment-card');
+
+            container.appendChild(comment_card);
+          });
+                        
+          const deleteBtns = document.querySelectorAll('.elipsis');
+          //let delete_box = document.getElementById(`icon${comment.comment_id}`);
+          deleteBtns.forEach(btn => {
+            //console.log('hhr',btn);
+          btn.addEventListener('click', () => {
+              const commentId = btn.getAttribute('data-comment-id');
+              let parent_card = btn.closest('.comment-card').querySelector('.delete-card');
+              
+            parent_card.style.display = 'flex';
+              if(parent_card.style.display == 'flex'){
+                document.getElementById('m-comment-modal').style.display = 'block';
+                document.getElementById('m-comment-modal').addEventListener('click',()=>{
+                  parent_card.style.display='none';
+                  document.getElementById('m-comment-modal').style.display = 'none';
+                });
+                
+              
+                //add event to delete btn
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                parent_card.addEventListener('click',()=>{
+                  fetch(`/delete-comment/${commentId}/`, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'X-CSRFToken': csrfToken,
+                    },
+                  })
+                    .then(response => {
+                      if (response.ok) {
+                        // Remove the comment element from the DOM
+                        //const commentEl = btn.closest('.comment');
+                        
+                        //commentEl.remove();
+                        btn.closest('.comment-card').remove();
+                        document.getElementById('m-comment-modal').style.display = 'none';
+                        
+                      } else {
+                        throw new Error('Failed to delete comment.');
+                      }
+                    })
+                    .catch(error => console.error(error));  
+                });
+                
+              }
+            
+            
+
+            
+            }); 
+          });
+          const deleteBtns_X = document.querySelectorAll('.elipsis-X');
+          //let delete_box = document.getElementById(`icon${comment.comment_id}`);
+          deleteBtns_X.forEach(btn => {
+            //console.log('hhr',btn);
+          btn.addEventListener('click', () => {
+              const commentId = btn.getAttribute('data-comment-id');
+              let parent_card = btn.closest('.comment-card').querySelector('.delete-card');
+              
+            parent_card.style.display = 'flex';
+              if(parent_card.style.display == 'flex'){
+                document.getElementById('m-comment-modal').style.display = 'block';
+                document.getElementById('m-comment-modal').addEventListener('click',()=>{
+                  parent_card.style.display='none';
+                  document.getElementById('m-comment-modal').style.display = 'none';
+                });
+              }
+          });
+
+        });
+
+        
     });
   });
-  
-  // add remove-form-btn event listener to existing formsets
-  const removeBtns = document.querySelectorAll('.remove-form-btn');
-  removeBtns.forEach(function(btn) {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      const formsetContainer = this.closest('.formset-container');
-      const formsetCount = document.querySelectorAll('.formset-container').length;
-      // only allow formset to be removed if there is more than one formset
-      if (formsetCount > 1) {
-        formsetContainer.parentNode.removeChild(formsetContainer);
-        // update formset indices
-        updateIndices();
-      }
-    });
-  }); */
-
-
-  
+});
 
 
 
-  /*
-function deleteFormsetRow(event) {
-  const formsetRow = event.target.closest('.formset-row');
-  const formsetCount = parseInt(formset.querySelector('#id_form-TOTAL_FORMS').value);
-  
-  if (formsetCount > 1) {
-    formsetRow.remove();
-    formset.querySelector('#id_form-TOTAL_FORMS').value = formsetCount - 1;
-  }
-} */
-
-/*
-const removeBtns = formset.querySelectorAll('.remove-formset-row');
-const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-removeBtns.forEach(removeBtn => {
-  console.log('hellllllo')
-    removeBtn.addEventListener('click', () => {
-        const formsetId = removeBtn.getAttribute('data-formset-id');
-        const deceased_url = document.getElementById('deceased-id').value;
-        const url = `/delete-biography/${formsetId}/`; // Change this to the URL for deleting the formset
-        fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken // You need to set the CSRF token here
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                // The formset was successfully deleted, so remove the corresponding HTML element
-                const formsetRow = removeBtn.parentElement;
-                formsetRow.remove();
-                //window.location.href = `/create_biography/${deceased_url}/`
-                setTimeout(function() {
-                  location.reload();
-              }, 1000);
-            } else {
-                // Handle the error if the formset wasn't deleted
-                console.log('not deleted!');
-            }
-        })
-        .catch(error => {
-            // Handle the error if the AJAX request failed
-            console.log('ajax request failed!');
-        });
-    });
-}); */
 
 
+document.getElementById('clip-board-m').addEventListener('click',()=>{
+  const textToCopy = document.getElementById('copy-text-m').innerHTML;
 
-/*
-
-deleteBtns.forEach((btn) => btn.addEventListener('click', (event)=>{
-  const formsetRow = event.target.closest('.formset-row');
-  const formsetCount = parseInt(formset.querySelector('#id_form-TOTAL_FORMS').value);
- 
-  
-  //const formsetId = deleteBtns.getAttribute('data-formset-id');
-  const deceased_url = document.getElementById('deceased-id').value;
-  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-  const formsetId = btn.getAttribute('data-formset-id');
-  
-  const url = `/delete-biography/${formsetId}/`; // Change this to the URL for deleting the formset
-    if (formsetCount > 1) {
-      console.log(formsetId === 'None');
-      if(formsetId === 'None'){
-        formsetRow.remove();
-        formset.querySelector('#id_form-TOTAL_FORMS').value = formsetCount - 1;
-      }
-      else{
-        fetch(url, {
-          method: 'DELETE',
-          headers: {
-              'Content-Type': 'application/json',
-              'X-CSRFToken': csrftoken // You need to set the CSRF token here
-          }
-      })
-      .then(response => {
-        if (response.ok) {
-          // The formset was successfully deleted, so remove the corresponding HTML element
-          formsetRow.remove();
-          formset.querySelector('#id_form-TOTAL_FORMS').value = formsetCount - 1;
-          //window.location.href = `/create_biography/${deceased_url}/`
-          setTimeout(function() {
-            location.reload();
-        }, 1000);
-        } 
-        else {
-            // Handle the error if the formset wasn't deleted
-            console.log('not deleted.......!');
-        }
-      })
-      .catch(error => {
-          // Handle the error if the AJAX request failed
-          console.log('ajax request failed!',error);
-        
-      });
-      }
-     
-    }
-  
-})); */
+  navigator.clipboard.writeText(textToCopy)
+  .then(() => {
+      console.log("Text copied to clipboard successfully");
+      document.getElementById('copied-m').style.display = 'block';
+      setTimeout(function() {
+          document.getElementById('copied-m').style.display = 'none';
+      }, 1000);
+  })
+  .catch((error) => {
+      console.error("Error copying text to clipboard: ", error);
+  });
+});
