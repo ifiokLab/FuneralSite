@@ -54,10 +54,13 @@ def invite_contributor(request):
 
 '''
 from django.conf import settings
-''''
+
+
 @login_required
 def invite_contributor(request):
+   
     if request.method == 'POST':
+        
         email = request.POST['email']
         name = request.POST['name']
         memorials =request.POST['memorials']
@@ -67,18 +70,19 @@ def invite_contributor(request):
         contributor = Contributor(email=email,name = name, invitation_token=invitation_token, invited_by=request.user,memorials = deceased)
         contributor.save()
         invite_url = request.build_absolute_uri(reverse('register_contributor') + '?token=' + invitation_token)
+       
+          
         send_mail(
             'Invitation to memorial app',
             f'You have been invited to contribute to a memorial on our app. To accept the invitation, please register using this link: {invite_url}',
-            f'{settings.DEFAULT_FROM_EMAIL}',
+            'ifiokudoh77@gmail.com',
             [email],
             fail_silently=False,
         )
     return JsonResponse({'status': 'ok'})
 
-'''
 
-@login_required
+'''@login_required
 def invite_contributor(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -108,7 +112,7 @@ def invite_contributor(request):
         except Exception as e:
             print(e.message)
     return JsonResponse({'status': 'ok'})
-
+'''
 
 
 def register_contributor(request):

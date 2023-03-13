@@ -139,35 +139,31 @@ AUTH_USER_MODEL = 'FuneralApp.myuser'
 LOGIN_REDIRECT_URL = 'home'
 
 
-'''
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'ifiokudoh77@gmail.com'
-EMAIL_HOST_PASSWORD = 'xigphnbfkvfllwcr'
-
-api_key = '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'
-'''
-
-# add this line after the BASE_DIR setting
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 environ.Env.read_env()
 # finally you can place this settings at the bottom of the file
 
-#EMAIL_BACKEND = 'sendgrid_backend.SendgridBackend'
-EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
-DEFAULT_FROM_EMAIL = env('FROM_EMAIL', default='ifiokudoh77gmail.com')
-#FROM_EMAIL = 'ifiokudoh6gmail.com'
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey'
+
+'''
 SENDGRID_API_KEY = env('SENDGRID_API_KEY')
 
-EMAIL_HOST_PASSWORD=env('SENDGRID_API_KEY')
-EMAIL_PORT = 465
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD =env('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
-#SENDGRID_SANDBOX_MODE_IN_DEBUG = False
-SENDGRID_SANDBOX_MODE_IN_DEBUG=False
+EMAIL_USE_SSL = False
+'''
 
-SENDGRID_ECHO_TO_STDOUT=False
+print(env('EMAIL_HOST'))
+print(env('EMAIL_HOST_USER'))
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+'''EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = env('EMAIL_PORT')
+Auth=env('Auth')
+STARTTLS=env('STARTTLS')
+'''
