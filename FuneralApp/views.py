@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login
 from django.contrib import messages
 import os
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+#from sendgrid import SendGridAPIClient
+#from sendgrid.helpers.mail import Mail
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm,AuthenticationForm
 
 # Create your views here.

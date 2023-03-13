@@ -156,8 +156,8 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 '''
 
-print(env('EMAIL_HOST'))
-print(env('EMAIL_HOST_USER'))
+#print(env('EMAIL_HOST'))
+#print(env('EMAIL_HOST_USER'))
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 '''EMAIL_HOST = env('EMAIL_HOST')

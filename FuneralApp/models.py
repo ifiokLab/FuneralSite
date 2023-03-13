@@ -1,6 +1,6 @@
 
 from django.db import models
-from ckeditor_uploader.fields import RichTextUploadingField
+#from ckeditor_uploader.fields import RichTextUploadingField
 from django.shortcuts import reverse
 from django.contrib.auth.models import User
 from django.conf import settings
