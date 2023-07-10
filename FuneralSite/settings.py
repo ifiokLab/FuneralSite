@@ -105,9 +105,9 @@ WSGI_APPLICATION = 'social_app.wsgi.application'
 #client_id = 'VndXT1NpWkZXb2xWbzJTanRaUHQ6MTpjaQ'
 #client_secret = 'HJfnu21R_iDdGs6bzw7I_vMv8JXyJl6OTVzcGDOe-oXO91Pqt8'
 
-api_key ='XQuIxghLpe6ziSYmXTA41lsUv'
-api_secret = 'cQxVE2vQC2SSqabFFaRA4uuSqIfYKU3kNjVpWoYZIUBNqV3fWd'
-bearer_token = 'AAAAAAAAAAAAAAAAAAAAANYrmwEAAAAAftOR0uY7mjwEJhP%2B3TY9KbgUYUQ%3Diz354F8K5JzYCsrjZQx3rO3L0XSXuVVMUnXntL7HVTs2kDsUiJ'
+api_key =''
+api_secret = ''
+bearer_token = ''
 
 
 SOCIALACCOUNT_ADAPTER = 'FuneralApp.adapter.SocialAccountAdapter'
