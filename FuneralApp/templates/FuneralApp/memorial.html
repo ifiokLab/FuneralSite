@@ -10,7 +10,7 @@
     <form action="" id="regForm" method="POST" >
         {% csrf_token %}
         <div class="header">
-            <h2>Futurism</h2>
+            <h2>FOREVER IN OUR HEARTS</h2>
             <div class="progress-container">
                 <button type="button" id="prevBtn" onclick="nextPrev(-1)" class="left-icon"><i class="fa-solid fa-chevron-left"></i></button>
                 <div class="progress" >
@@ -19,22 +19,30 @@
                 <div class="stage" id="stage"></div>
             </div>
         </div>
-    
+
         <div class="tab life">
             <div class="card1">
                 <h2>Whose life are you memorializing?</h2>
                 <div class="items">
-                   <input type="hidden" name="user" value="{{request.user.id}}">
+                   <!--<input type="hidden" name="user" value="{{request.user.id}}">-->
                     <label for="">First Name</label>
                     {{form.first_name}}
                 </div>
                 <div class="items">
-                    <label for="">Middle Name(optional)</label>
+                    <label for="">Middle Name</label>
                     {{form.middle_name}}
                 </div>
                 <div class="items">
                     <label for="">Last Name</label>
                     {{form.last_name}}
+                </div>
+                <div class="items">
+                    <label for="">City</label>
+                    {{form.location}}
+                </div>
+                 <div class="items">
+                    <label for="">Cause of death</label>
+                    {{form.death_cause}}
                 </div>
             </div>
             <div class="card2">
@@ -42,7 +50,7 @@
                 <button type="button" id="nextBtn" onclick="nextPrev(1)" class="next">Next Step</button>
             </div>
         </div>
-    
+
         <div class="tab born" >
             <div class="card1">
                 <h2 id="born"></h2>
@@ -85,7 +93,7 @@
                 <button type="button" id="nextBtn" onclick="nextPrev(1)">Next Step</button>
             </div>
         </div>
-    
+
         <div class="tab photo">
             <div class="card1">
                 <h2>Add photos</h2>
@@ -96,7 +104,7 @@
                    </div>
                  </div>
             </div>
-    
+
             <div class="card2">
                 <button type="submit" class="cancel">Skip for now</button>
                 <button type="submit" class="next">Add Photos</button>

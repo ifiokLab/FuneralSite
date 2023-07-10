@@ -1,6 +1,6 @@
 
 from django.db import models
-from ckeditor_uploader.fields import RichTextUploadingField
+#from ckeditor_uploader.fields import RichTextUploadingField
 from django.shortcuts import reverse
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -20,9 +20,9 @@ class myuser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(auto_now_add=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-   
 
-     
+
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name','last_name',]
     objects = CustomUserManager()
@@ -31,6 +31,20 @@ class myuser(AbstractBaseUser, PermissionsMixin):
         return f'{self.first_name} {self.last_name}'
 
 
+
+
+
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='Profile/',blank=True,null=True)
+    address = models.CharField(max_length=100,blank=True,null=True)
+    followers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='following',blank=True,null=True)
+    phone_number = models.CharField(max_length=11,blank=True,null=True)
+
+    def __str__(self):
+        return f'{self.user.first_name}'
 
 
 
@@ -50,22 +64,30 @@ month_choices = [
     ('December','December'),
 ]
 
+from django.core.validators import MinValueValidator
+
 class Deceased(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,null =True,blank = True)
     #contributors = models.ManyToManyField(Contributor, blank=True,null=True)
     first_name = models.CharField(max_length=255)
     middle_name = models.CharField(max_length=255,blank=True,null=True)
     last_name = models.CharField(max_length=255)
+    death_cause = models.CharField(max_length=255,blank=True,null=True)
     month_birth = models.CharField(max_length=100,choices=month_choices)
     day_birth = models.IntegerField()
-    year_birth = models.IntegerField(error_messages='Year must be greater than or equal to 1901')
-   
+    year_birth = models.IntegerField(blank=True,null=True)
+
+    #year_birth = models.IntegerField(
+        #validators=[MinValueValidator(1901)],
+        #error_messages={'invalid': ('Year must be greater than or equal to 1901',)}
+    #)
+
     month_death = models.CharField(max_length=100,choices=month_choices,blank=True,null=True)
     day_death= models.IntegerField(blank=True,null=True)
-    year_death = models.IntegerField(blank=True,null=True,error_messages='Year must be greater than or equal to 1901')
-    #bio = models.TextField(null=True, blank=True)
-    
-   
+    year_death = models.IntegerField(blank=True,null=True)
+    location = models.CharField(max_length=100,blank=True,null=True)
+
+
 
     def __str__(self):
         return self.first_name
@@ -78,7 +100,7 @@ class Contributor(models.Model):
     invited_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     contributor_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='contributors_user',blank=True,null=True)
     memorials = models.ForeignKey(Deceased,on_delete=models.CASCADE, related_name='contributors',null=True,blank=True)
-   
+
 
 
 facts_choices = [
@@ -109,6 +131,33 @@ facts_choices = [
 ]
 
 
+ceremony = [
+    ('1','Funeral'),
+    ('2','Graveside Service'),
+    ('3','Viewing Service'),
+    ('4','Visitation Service'),
+    ('5','Memorial Service'),
+    ('6','Celebration of Life'),
+    ('7','Wake'),
+    ('8','Other'),
+]
+class Event(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    deceased = models.ForeignKey(Deceased,on_delete=models.CASCADE)
+    celebration_type = models.CharField(max_length=100,choices=ceremony)
+    description = models.TextField()
+    date = models.DateTimeField()
+    location = models.CharField(max_length=100)
+    streaming_link = models.CharField(max_length=100,blank=True,null=True)
+    host_image = models.ImageField(upload_to='host-image/',blank=True,null=True)
+
+    def __str__(self):
+        return f'{self.celebration_type}'
+
+    class Meta:
+        ordering = ['-id']
+
+
 class BiographyFacts(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     deceased = models.ForeignKey(Deceased,on_delete=models.CASCADE)
@@ -129,30 +178,236 @@ class PhotoAlbum(models.Model):
     deceased = models.ForeignKey(Deceased,on_delete=models.CASCADE)
     title = models.CharField(max_length=100,null=True,blank=True)
     date = models.DateField(blank=True,null=True)
-    image = models.ImageField(upload_to='Albums/',null=True,blank=True)
+    image = models.FileField(upload_to='Albums/',null=True,blank=True)
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_photos', blank=True)
 
     def __str__(self):
         return self.title
 
 
-   
 
+
+from ckeditor.fields import RichTextField
 
 class Biography(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    deceased = models.ForeignKey(Deceased,on_delete=models.CASCADE)
-    body_text = models.TextField(null=True,blank=True)
+    deceased = models.ForeignKey(Deceased,on_delete=models.CASCADE,related_name='biography')
+    body_text = RichTextField(null=True, blank=True)
+    #new
+    introduction = models.TextField(blank =True,null=True)
+    early_life = models.TextField(blank =True,null=True)
+    career = models.TextField(blank =True,null=True)
+    personal_life = models.TextField(blank =True,null=True)
+    Awards = models.TextField(blank =True,null=True)
+
     cover_photo = models.ImageField(null=True, blank=True,upload_to = 'CoverPhoto/')
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_cover', blank=True)
 
     def __str__(self):
         return self.deceased.first_name
 
-        
+    class Meta:
+        ordering = ['-id']
 
+
+
+from django.utils import timezone
 class Comments(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     photo = models.ForeignKey(PhotoAlbum,on_delete=models.CASCADE)
     text = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_comment', blank=True)
+    heart = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='heart_comment', blank=True)
+
+    def get_time_since_comment(self):
+        time_difference = timezone.now() - self.date
+
+        if time_difference.total_seconds() < 60:  # Less than a minute
+            return f"{int(time_difference.total_seconds())} sec ago"
+        elif time_difference.total_seconds() < 3600:  # Less than an hour
+            minutes = int(time_difference.total_seconds() / 60)
+            return f"{minutes} mins ago"
+        elif time_difference.total_seconds() < 86400:  # Less than a day
+            hours = int(time_difference.total_seconds() / 3600)
+            return f"{hours} hours ago"
+        elif time_difference.total_seconds() < 604800:  # Less than a week
+            days = int(time_difference.total_seconds() / 86400)
+            return f"{days} days ago"
+        elif time_difference.total_seconds() < 2592000:  # Less than a month
+            weeks = int(time_difference.total_seconds() / 604800)
+            return f"{weeks} weeks ago"
+        elif time_difference.total_seconds() < 31536000:  # Less than a year
+            months = int(time_difference.total_seconds() / 2592000)
+            return f"{months} months ago"
+        else:
+            years = int(time_difference.total_seconds() / 31536000)
+            return f"{years} years ago"
+
+
+
+class Tribute(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    deceased = models.ForeignKey(Deceased,on_delete=models.CASCADE)
+    text = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_tribute', blank=True)
+    heart = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='heart_tribute', blank=True)
+
+    def get_time_since_comment(self):
+        time_difference = timezone.now() - self.date
+
+        if time_difference.total_seconds() < 60:  # Less than a minute
+            return f"{int(time_difference.total_seconds())} sec ago"
+        elif time_difference.total_seconds() < 3600:  # Less than an hour
+            minutes = int(time_difference.total_seconds() / 60)
+            return f"{minutes} mins ago"
+        elif time_difference.total_seconds() < 86400:  # Less than a day
+            hours = int(time_difference.total_seconds() / 3600)
+            return f"{hours} hours ago"
+        elif time_difference.total_seconds() < 604800:  # Less than a week
+            days = int(time_difference.total_seconds() / 86400)
+            return f"{days} days ago"
+        elif time_difference.total_seconds() < 2592000:  # Less than a month
+            weeks = int(time_difference.total_seconds() / 604800)
+            return f"{weeks} weeks ago"
+        elif time_difference.total_seconds() < 31536000:  # Less than a year
+            months = int(time_difference.total_seconds() / 2592000)
+            return f"{months} months ago"
+        else:
+            years = int(time_difference.total_seconds() / 31536000)
+            return f"{years} years ago"
+
+
+
+    class Meta:
+        ordering = ['-id']
+
+
+
+class TributeReply(models.Model):
+    tribute = models.ForeignKey(Tribute, on_delete=models.CASCADE, related_name='tribute_replies')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    text = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='tribute_liked_reply', blank=True)
+    heart = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='tribute_heart_reply', blank=True)
+
+
+    def get_time_since_comment(self):
+        time_difference = timezone.now() - self.date
+
+        if time_difference.total_seconds() < 60:  # Less than a minute
+            return f"{int(time_difference.total_seconds())} sec ago"
+        elif time_difference.total_seconds() < 3600:  # Less than an hour
+            minutes = int(time_difference.total_seconds() / 60)
+            return f"{minutes} mins ago"
+        elif time_difference.total_seconds() < 86400:  # Less than a day
+            hours = int(time_difference.total_seconds() / 3600)
+            return f"{hours} hours ago"
+        elif time_difference.total_seconds() < 604800:  # Less than a week
+            days = int(time_difference.total_seconds() / 86400)
+            return f"{days} days ago"
+        elif time_difference.total_seconds() < 2592000:  # Less than a month
+            weeks = int(time_difference.total_seconds() / 604800)
+            return f"{weeks} weeks ago"
+        elif time_difference.total_seconds() < 31536000:  # Less than a year
+            months = int(time_difference.total_seconds() / 2592000)
+            return f"{months} months ago"
+        else:
+            years = int(time_difference.total_seconds() / 31536000)
+            return f"{years} years ago"
+
+
+
+
+class Waitlist(models.Model):
+    email = models.EmailField()
+
+    def __str__(self):
+        return f'{self.email}'
+
+
+
+class Candle(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    deceased = models.ForeignKey(Deceased,on_delete=models.CASCADE)
+    lit = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.deceased}'
+
+
+
+
+
+
+class Relationship(models.Model):
+    TYPE_CHOICES = (
+        ('friend', 'Friend'),
+        ('family', 'Family'),
+        ('other', 'Other'),
+    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='from_user')
+    relationship_type = models.CharField(choices=TYPE_CHOICES, max_length=20)
+    deceased = models.ForeignKey('Deceased', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user}'
+
+
+
+
+
+class Post(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='Post/')
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.title}'
+
+
+
+
+
+class CommentReply(models.Model):
+    comment = models.ForeignKey(Comments, on_delete=models.CASCADE, related_name='replies')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    text = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_reply', blank=True)
+    heart = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='heart_reply', blank=True)
+
+
+    def get_time_since_comment(self):
+        time_difference = timezone.now() - self.date
+
+        if time_difference.total_seconds() < 60:  # Less than a minute
+            return f"{int(time_difference.total_seconds())} sec ago"
+        elif time_difference.total_seconds() < 3600:  # Less than an hour
+            minutes = int(time_difference.total_seconds() / 60)
+            return f"{minutes} mins ago"
+        elif time_difference.total_seconds() < 86400:  # Less than a day
+            hours = int(time_difference.total_seconds() / 3600)
+            return f"{hours} hours ago"
+        elif time_difference.total_seconds() < 604800:  # Less than a week
+            days = int(time_difference.total_seconds() / 86400)
+            return f"{days} days ago"
+        elif time_difference.total_seconds() < 2592000:  # Less than a month
+            weeks = int(time_difference.total_seconds() / 604800)
+            return f"{weeks} weeks ago"
+        elif time_difference.total_seconds() < 31536000:  # Less than a year
+            months = int(time_difference.total_seconds() / 2592000)
+            return f"{months} months ago"
+        else:
+            years = int(time_difference.total_seconds() / 31536000)
+            return f"{years} years ago"
+

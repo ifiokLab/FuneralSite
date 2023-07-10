@@ -1,5 +1,8 @@
 {% extends 'FuneralApp/index.html' %}
+
 {% load static %}
+
+
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/login.css' %}">
 {% endblock %}
@@ -23,7 +26,7 @@
         
            {% endif %}
             <div class="input-card">
-               {{form.username}}
+               {{form.login}}
                 <div class="tool-tip" id="email">Email address</div>
             </div>
             <div class="input-card">

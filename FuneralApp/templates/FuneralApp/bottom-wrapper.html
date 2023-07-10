@@ -1,0 +1,109 @@
+<div class="wrapper">
+                            <div class="header">
+                                <div class="in">In memory of </div>
+                                <div class="name">{{deceased.first_name}} {{deceased.last_name}}</div>
+                                <div class="month-deceased">{{deceased.month_birth}} {{deceased.year_birth}} - {{deceased.month_death}} {{deceased.year_death}}</div>
+                                {% if parent.cover_photo %}
+                                <img class="mem-img" src="{{parent.cover_photo.url}}" alt="">
+                                {% endif %}
+                               <!--  <div class="family-card">
+                                    <div class="title">Family & Friends</div>
+                                    <div class="family-wrapper">
+                                        {% for item in  relationship %}
+                                        <div class="image-box">
+                                           <a href="{% url 'profile' item.user.id item.user.first_name %}">
+                                            {% if item.user.profile.image %}
+                                            <img class="f-image" src="{{item.user.profile.image.url}}" alt="">
+                                            {% else %}
+                                            <img class="f-image" src="{% static 'images/default.png' %}" alt="">
+                                            {% endif %}
+
+                                           </a>
+                                            <div class="f-name">{{item.user.first_name}} {{item.user.last_name}}</div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>-->
+                                <div class="what">What can you do?</div>
+                            </div>
+                            <div class="items">
+                                 {% if event_list %}
+                                <!--<div class="title">Upcoming Event</div>-->
+
+                                {% for data in event_list %}
+                                {% if data.host_image %}
+                                <div class="event-img">
+                                    <img class="mem-img" src="{{data.host_image.url}}" alt="">
+                                </div>
+                                {% endif %}
+                                <div class="text">HOST:{{data.user}}</div>
+                                <div class="text">Ceremony:{{data.get_celebration_type_display}}</div>
+                                <div class="text">Date:{{data.date}}</div>
+                                <div class="text">streaming link:{{data.streaming_link}}</div>
+                                <div class="text" style="margin-bottom: 30px;">Location:{{data.location}}</div>
+                                {% endfor %}
+
+                                {% endif %}
+                            </div>
+                            <div class="items">
+                                <!--<div class="title">Add Photos</div>-->
+                                 <div class="link-wrapper">
+                                    <a href="{% url 'create-photo' deceased.id %}" class="links">
+                                        <div class="icons"><i class="fa-regular fa-square-plus"></i></div>
+                                        <div class="text">Add Photos</div>
+                                    </a>
+                                </div>
+                                <div class="text" id = 'more-photo'>Contribute with your photos, videos or stories to {{deceased.first_name}} {{deceased.last_name}}'s Memorial to help {{deceased.first_name}}'s family and friends come back to more memories.</div>
+                                <button onclick="myFunction2()" id="myBtn-photo" class="read-btn">
+                                    <i class="fa-solid fa-circle-plus"></i> <span class="text">Read more</span>
+                                </button>
+                            </div>
+                            <div class="items">
+                               <!-- <div class="title">Support</div>-->
+                                <div class="link-wrapper">
+                                    <a href="" class="links">
+                                        <div class="icons"><i class="fa-regular fa-square-plus"></i></div>
+                                        <div class="text">Light a candle</div>
+                                    </a>
+                                </div>
+
+                                <div class="text" id = 'more-photo3'>Light a candle to show your support for {{deceased.first_name}} {{deceased.last_name}} and ensure their memory lives on forever. Your contribution helps to keep our website free for all grieving families.</div>
+                                  <button onclick="myFunction3()" id="myBtn-photo3" class="read-btn">
+                                    <i class="fa-solid fa-circle-plus"></i> <span class="text">Read more</span>
+                                </button>
+
+                            </div>
+
+
+                            <div class="items">
+                                <div class="title">Share</div>
+                                <div class="clip-board">
+                                    <div class="texts" id="copy-text-m" style="font-size: 0.8rem;overflow-x: hidden;text-overflow: ellipsis;">https://futurismx.pythonanywhere.com/create_biography/{{deceased.id}}/</div>
+                                    <div class="icon" id="clip-board-m" >
+                                        <i class="fa-regular fa-square-plus">
+                                        <div id="copied-m">Copied!</div>
+                                    </i></div>
+
+                                </div>
+
+                                <div class="share-tray">
+                                    <div class="box" onclick="share_whatsapp(fname = '{{deceased.first_name}}',lname = '{{deceased.last_name}}',month = '{{deceased.month_death}}',year = '{{deceased.year_death}}',url='https://futurismx.pythonanywhere.com/create_biography/{{deceased.id}}')">
+                                        <div class="icon"><i class="fa-brands fa-whatsapp"></i></div>
+
+                                    </div>
+                                    <div class="box" onclick="share_twitter(fname = '{{deceased.first_name}}',lname = '{{deceased.last_name}}',month = '{{deceased.month_death}}',year = '{{deceased.year_death}}',url='https://futurismx.pythonanywhere.com/create_biography/{{deceased.id}}' )">
+                                        <div class="icon"><i class="fa-brands fa-twitter"></i></div>
+
+                                    </div>
+                                    <div class="box" onclick="share_messenger(fname = '{{deceased.first_name}}',lname = '{{deceased.last_name}}',month = '{{deceased.month_death}}',year = '{{deceased.year_death}}',url='https://futurismx.pythonanywhere.com/create_biography/{{deceased.id}}')">
+                                        <div class="icon" ><i class="fa-brands fa-facebook-messenger"></i></div>
+
+                                    </div>
+                                    <div class="box" onclick="share_facebook(fname = '{{deceased.first_name}}',lname = '{{deceased.last_name}}',month = '{{deceased.month_death}}',year = '{{deceased.year_death}}',url='https://futurismx.pythonanywhere.com/create_biography/{{deceased.id}}')">
+                                        <div class="icon"><i class="fa-brands fa-square-facebook"></i></div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>

@@ -11,10 +11,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
-import environ # add this import
+#import environ # add this import
 
  # add this line before  the BASE_DIR  setting
-env = environ.Env(DEBUG=(bool, True))
+#env = environ.Env(DEBUG=(bool, True))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -33,19 +33,29 @@ SECRET_KEY = 'django-insecure--@oyd6%es)b+c)xm$gf0pg#)r*hk4tq_!!8nn^24da&9dhl87a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['futurismx.pythonanywhere.com']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'django.contrib.sites',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'FuneralApp',
+    'ckeditor',
+    'ckeditor_uploader',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.twitter',
 ]
 
 MIDDLEWARE = [
@@ -56,8 +66,63 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+
+
 ]
 
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SITE_ID = 3
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+        'APP': {
+            'client_id': '420132326137-brmr2ic56k86l5mqg32komfqb22uoqgf.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        }
+    },
+     'facebook': {
+        'METHOD': 'oauth2',
+        'LOCALE_FUNC': lambda request: 'en_US',
+        'SCOPE': ['email', 'public_profile'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'VERSION': 'v13.0',
+
+    }
+}
+
+ROOT_URLCONF = 'social_app.urls'
+WSGI_APPLICATION = 'social_app.wsgi.application'
+
+#client_id = 'VndXT1NpWkZXb2xWbzJTanRaUHQ6MTpjaQ'
+#client_secret = 'HJfnu21R_iDdGs6bzw7I_vMv8JXyJl6OTVzcGDOe-oXO91Pqt8'
+
+api_key ='XQuIxghLpe6ziSYmXTA41lsUv'
+api_secret = 'cQxVE2vQC2SSqabFFaRA4uuSqIfYKU3kNjVpWoYZIUBNqV3fWd'
+bearer_token = 'AAAAAAAAAAAAAAAAAAAAANYrmwEAAAAAftOR0uY7mjwEJhP%2B3TY9KbgUYUQ%3Diz354F8K5JzYCsrjZQx3rO3L0XSXuVVMUnXntL7HVTs2kDsUiJ'
+
+
+SOCIALACCOUNT_ADAPTER = 'FuneralApp.adapter.SocialAccountAdapter'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+#ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+#ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_EMAIL_VERIFICATION = "none"
+SOCIALACCOUNT_QUERY_EMAIL = True
+
+ACCOUNT_FORMS = {'signup': 'FuneralApp.forms.UserForm','login': 'FuneralApp.forms.LoginForm'}
 ROOT_URLCONF = 'FuneralSite.urls'
 
 TEMPLATES = [
@@ -128,6 +193,7 @@ import os
 STATIC_URL = 'static/'
 STATIC_ROOT= os.path.join(BASE_DIR,'static')
 
+
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -136,11 +202,93 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'FuneralApp.myuser'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'recent_memorial'
+LOGOUT_REDIRECT_URL = 'account_login'
 
 
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
-environ.Env.read_env()
+
+
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': None, #You can change this based on your requirements.
+        'width': 'auto',
+        'height':'auto',
+
+        # 'skin': 'moono',
+        # # 'skin': 'office2013',
+        # 'toolbar_Basic': [
+        #     ['Source', '-', 'Bold', 'Italic']
+        # ],
+        'toolbar_Custom': [
+            {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
+            {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
+            {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
+            {'name': 'forms',
+             'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
+                       'HiddenField']},
+            '/',
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+            {'name': 'paragraph',
+             'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
+                       'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
+                       'Language']},
+            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+            {'name': 'insert',
+             'items': ['Image', 'Youtube','Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+            '/',
+            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+            {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
+            {'name': 'about', 'items': ['CodeSnippet']},
+            {'name': 'about', 'items': ['About']},
+            '/',  # put this to force next toolbar on new line
+            {'name': 'yourcustomtools', 'items': [
+                # put the name of your editor.ui.addButton here
+                'Preview',
+                'Maximize',
+
+            ]},
+        ],
+        'toolbar': 'Custom',  # put selected toolbar config here
+        'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+        'height': 'auto',
+        # 'width': '100%',
+        'filebrowserWindowHeight': 725,
+        'filebrowserWindowWidth': 940,
+        'toolbarCanCollapse': True,
+        'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        'tabSpaces': 4,
+        'extraPlugins': ','.join([
+            'uploadimage', # the upload image feature
+            # your extra plugins here
+            'div',
+            'autolink',
+            'autoembed',
+            'embedsemantic',
+            'autogrow',
+            'devtools',
+            'widget',
+            'lineutils',
+            'clipboard',
+            'dialog',
+            'dialogui',
+            'elementspath',
+            'codesnippet',
+        ]),
+    }
+}
+
+
+
+
+#environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+#environ.Env.read_env()
 # finally you can place this settings at the bottom of the file
 
 
@@ -156,8 +304,8 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 '''
 
-print(env('EMAIL_HOST'))
-print(env('EMAIL_HOST_USER'))
+#print(env('EMAIL_HOST'))
+#print(env('EMAIL_HOST_USER'))
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 '''EMAIL_HOST = env('EMAIL_HOST')

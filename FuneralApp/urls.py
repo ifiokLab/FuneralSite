@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('signup/',views.SignUp, name='signup'),
+    path('register/<int:pk>/',views.register, name='register'),
     path('',views.home, name='home'),
     path('login/',views.Login.as_view(),name='login'),
     path('logout/',views.Logout,name='logout'),
@@ -28,8 +29,19 @@ urlpatterns = [
     path('like-list/<int:photoId>/', views.like_list, name='like_list'),
     path('like-cover/<int:photoId>/', views.like_cover, name='like_cover'),
     path('cover-like-list/<int:photoId>/', views.cover_like_list, name='cover_like_list'),
-    
 
+    path('create-event/',views.create_event,name= 'create-event'),
+    path('edit-event/<int:pk>/',views.edit_event,name= 'edit-event'),
+    path('account/<int:pk>/',views.account, name = 'account'),
+    path('delete-event/<int:eventId>/', views.delete_event, name='delete-event'),
+    path('recent-memorial/',views.recent_memorial,name='recent_memorial'),
+
+    path('search-memorials/',views.search_memorials,name='search_memorials'),
+
+
+    path('add-tribute/<int:deceasedId>/', views.add_tribute, name='add-tribute'),
+    path('tribute/<int:deceasedId>/list/',views.list_tribute, name='list-tribute'),
+    path('delete-tribute/<int:commentId>/', views.delete_tribute, name='delete_tribute'),
 ]
 
 

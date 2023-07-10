@@ -6,6 +6,10 @@
     min-height: 100%;
     margin: 100px 0;
 }
+
+.error-label{
+    color: red;
+}
 .container{
     display: flex;
     flex-direction: column;
@@ -16,6 +20,13 @@
     padding: 12px 30px;
     background-color: #fff;
     margin: 60px 0;
+}
+ ul{
+    list-style-type: none;
+ }
+li{
+    list-style-type: none;
+    margin: 9px 0;
 }
 .container .header{
     display: flex;
@@ -44,7 +55,7 @@
     text-align: center;
 }
 .container .body{
- 
+
     margin: 15px 0;
 }
 
@@ -63,13 +74,13 @@
     outline:solid #c2c8d0 1px;
     border-radius: 5px;
     border: transparent;
-   
+
 
 }
 
 .container .body .input-card input:focus{
     outline:solid #3a183f 2px;
-  
+
 }
 
 .container .body .input-card .tool-tip{
@@ -79,8 +90,8 @@
     left: 30px;
     font-size: 1.1rem;
     color: #230c22;
-    
-   
+
+
 }
 
 
@@ -155,7 +166,7 @@
     display: none;
     position: absolute;
     top: 0;left: 0;right: 0;bottom: 0;
-  
+
 }
 #overlay.show{
     display: block;
@@ -215,7 +226,7 @@
     background-color: #fff;
     top: -17px;
     font-size: 14px;
-    padding: 5px; 
+    padding: 5px;
 }
 .auth-card .card{
     margin: 7px 0;
@@ -229,7 +240,7 @@
     color: #1A202C;
     text-decoration: none;
     border-radius: 6px;
-    
+
 }
 .auth-card  .card a:hover{
     background-color: #dee2e6;
